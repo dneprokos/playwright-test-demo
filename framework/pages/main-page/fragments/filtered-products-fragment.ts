@@ -9,6 +9,10 @@ export class FilteredProductsFragment extends BaseFragment {
         super(page);
     }
 
+    /**
+     * Get array of filtered products
+     * @returns array of product names
+     */
     async getFilteredProductNames(): Promise<string[]> {
         return await this.page.locator('.card-title').allInnerTexts();
     }
