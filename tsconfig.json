@@ -22,7 +22,9 @@
       ],
       "paths": {
           "@framework/*": ["framework/*"],
-          "@root/*":["./*"]
+          "@root/*":["./*"],
+          "@sql/*":["services-sql/*"],
+          "@api/*":["services-rest-api/*"]
       }
     },
   }
