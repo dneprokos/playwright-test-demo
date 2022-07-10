@@ -1,5 +1,5 @@
-import { CategoriesFragment } from '@framework/pages/main-page/fragments/categories-fragment';
-import test, { expect } from '@root/playwright-fixture-extention';
+import { CategoriesFragment } from '@organic-shop/pages/main-page/fragments/categories-fragment';
+import test, { expect } from '@organic-shop/playwright-fixture-extention';
 
 test.describe.parallel('Category tests', async () => {
     test('Select category - products should be filtered by category', 
