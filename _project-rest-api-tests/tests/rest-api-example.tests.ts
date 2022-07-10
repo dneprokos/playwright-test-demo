@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import test from '@root/playwright-fixture-extention';
+import test from '@rest-tests/playwright-fixture-extention';
 import { BookingModel } from '@root/services-rest-api/models/booking-model/booking-model';
 
 test.describe.parallel('API example tests', async () => {

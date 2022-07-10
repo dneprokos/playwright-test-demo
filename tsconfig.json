@@ -3,7 +3,7 @@
     "compilerOptions": {
       //"esModuleInterop": true,
       "baseUrl": "./",
-      "outDir": "./dist/out-tsc",
+      "outDir": "_project-organic-shop-site-tests/dist/out-tsc",
       "forceConsistentCasingInFileNames": true,
       "strict": true,
       "noImplicitReturns": true,
@@ -24,7 +24,10 @@
           "@framework/*": ["framework/*"],
           "@root/*":["./*"],
           "@sql/*":["services-sql/*"],
-          "@api/*":["services-rest-api/*"]
+          "@api/*":["services-rest-api/*"],
+          "@organic-shop/*": ["_project-organic-shop-site-tests/*"],
+          "@rest-tests/*": ["_project-rest-api-tests/*"],
+          "@test_automation-project/*": ["_project-test-automation-site-tests/*"]
       }
     },
   }

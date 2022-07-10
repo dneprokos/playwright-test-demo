@@ -1,6 +1,6 @@
 import { EnvironmentParameters } from '@framework/configuration/environment-constants';
 import { getEnv } from '@framework/configuration/environment-helper';
-import { MainPage } from '@framework/pages/main-page/main-page';
+import { MainPage } from '@organic-shop/pages/main-page/main-page';
 import { test as base } from '@playwright/test';
 import { RestApiRequestsFacade } from '@root/services-rest-api/facade/rest-api-requests-facade';
 
