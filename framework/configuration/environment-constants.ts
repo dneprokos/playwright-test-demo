@@ -5,6 +5,8 @@ export class EnvironmentParameters {
     static baseUrl = 'BASE_URL';
     static maxTestRunTime = 'MAX_TEST_RUNTIME';
     static restBookingBaseUrl = 'REST_BOOKING_BASE_URL';
+    static user = 'USER';
+    static password = 'PASSWORD';
 }
 
 
