@@ -1,10 +1,12 @@
 import { EnvironmentParameters } from '@framework/configuration/environment-constants';
 import { getEnv } from '@framework/configuration/environment-helper';
 import { test as base } from '@playwright/test';
+import HomePage from './pages/home-page/home-page';
 import { LoginPage } from './pages/login-page/login-page';
 
 type Pages = {
     LoginPage: LoginPage;
+    HomePage: HomePage
 }
 
 type EnvironmentVariables = {
@@ -14,11 +16,14 @@ type EnvironmentVariables = {
 
 export const test = base.extend<Pages & EnvironmentVariables>({
     //Environment variables
-    baseURL: getEnv(EnvironmentParameters.baseUrl),
+    baseURL: getEnv(EnvironmentParameters.baseUrl) as string,
 
     //Pages. Pages intialization for quick access
     LoginPage: async ({page}, use) => {
         await use(new LoginPage(page));
+    },
+    HomePage: async ({page}, use) => {
+        await use(new HomePage(page));
     }
 })
 
