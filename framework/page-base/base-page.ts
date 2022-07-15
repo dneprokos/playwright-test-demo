@@ -5,6 +5,7 @@ export class BasePage {
 
     constructor(page: Page) {
         this.page = page;
+        
     }
 
     protected async navigateUrl(url: string): Promise<void> {
