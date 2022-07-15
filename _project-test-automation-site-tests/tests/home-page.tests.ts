@@ -1,11 +1,11 @@
 import test, { expect } from '@test_automation-project/playwright-fixture-extention';
-import { HeaderMenuNames } from '../pages/_common-pages/fragments/header-menu-names-enum';
+import { HeaderMenuNames } from '@test_automation-project/pages/_common-pages/fragments/header-menu-names-enum';
+import AuthenticationSteps from '@root/_project-test-automation-site-tests/utils/common-steps/basic-steps';
 
-test.describe.parallel('Home page tests - Verify home page logic', async () => {
+test.describe.parallel('Home page tests - Verify page logic', async () => {
     
     test.beforeEach(async ({ page, baseURL, LoginPage }) => {
-        await page.goto(baseURL as string);
-        await LoginPage.loginForm.loginToMainPageWithCorrectCredentials();
+        await new AuthenticationSteps(page).openBasePageAndLoginWithSessionStorage(baseURL as string);
     });
     
     test('Home page content test', 
@@ -17,6 +17,8 @@ test.describe.parallel('Home page tests - Verify home page logic', async () => {
 
             //Assert
             await page.waitForTimeout(5000);
+            
+            
         }
     );
 })
