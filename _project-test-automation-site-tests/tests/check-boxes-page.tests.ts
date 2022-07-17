@@ -1,7 +1,7 @@
 import test, { expect } from '@test_automation-project/playwright-fixture-extention';
 import AuthenticationSteps from '@test_automation-project/utils/common-steps/basic-steps';
-import { CheckBoxNames } from '../pages/check-box-page/checkbox-names-enum';
-import { HeaderMenuNames } from '../pages/_common-pages/fragments/header-menu-names-enum';
+import { CheckBoxNames } from '@test_automation-project/pages/check-box-page/checkbox-names-enum';
+import { HeaderMenuNames } from '@test_automation-project/pages/_common-pages/fragments/header-menu-names-enum';
 
 test.describe.parallel('Check-boxes page tests - Verify page logic', async () => {
     test.beforeEach(async ({ page, baseURL, HomePage}) => {
