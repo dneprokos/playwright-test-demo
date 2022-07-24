@@ -7,7 +7,7 @@ const config: PlaywrightTestConfig = {
     testMatch: 'tests/*tests.ts',
     retries: getEnvParseNumber(EnvironmentParameters.retryFailed)?? 1,
     workers: getEnvParseNumber(EnvironmentParameters.workers)?? 4,
-    //globalSetup: require.resolve('./global-setup'),
+    globalSetup: require.resolve('./global-setup'),
     reporter: [
         ['allure-playwright'],
         ['list']
