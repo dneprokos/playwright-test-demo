@@ -10,6 +10,7 @@ import InputFieldsPage from './pages/input-fields-page/input-fields-page';
 import { LoginPage } from './pages/login-page/login-page';
 import RadioButtonPage from './pages/radio-button-page/radio-button-page';
 import TablePage from './pages/table-page/table-page';
+import TogglePage from './pages/toggle-page/toggle-page';
 
 type Pages = {
     LoginPage: LoginPage;
@@ -20,6 +21,7 @@ type Pages = {
     RadioButtonPage: RadioButtonPage,
     TablePage: TablePage,
     DatePickerPage: DatePickerPage,
+    TogglesPage: TogglePage,
     EndToEndPage: EndToEndPage
 }
 
@@ -56,6 +58,9 @@ export const test = base.extend<Pages & EnvironmentVariables>({
     },
     DatePickerPage: async ({page}, use) => {
         await use(new DatePickerPage(page));
+    },
+    TogglesPage: async ({page}, use) => {
+        await use(new TogglePage(page));
     },
     EndToEndPage: async ({page}, use) => {
         await use(new EndToEndPage(page));
