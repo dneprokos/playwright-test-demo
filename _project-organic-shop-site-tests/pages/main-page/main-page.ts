@@ -1,5 +1,5 @@
 import { BasePage } from "@framework/page-base/base-page";
-import { Page } from "playwright";
+import { Page } from "@playwright/test";
 import { HeaderFragment } from "../base-page-fragments/header-fragment";
 import { CategoriesFragment } from "./fragments/categories-fragment";
 import { FilteredProductsFragment } from "./fragments/filtered-products-fragment";

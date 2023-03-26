@@ -1,4 +1,4 @@
-import { Locator, Page } from "playwright";
+import { Locator, Page } from "@playwright/test";
 
 export async function waitForElementsCount(page: Page, locator: Locator, expectedCount: number, timeOutSeconds: number = 3): Promise<void> {
     let timeOut = timeOutSeconds;

@@ -1,4 +1,4 @@
-import { Page } from "playwright";
+import { Page } from "@playwright/test";
 
 export default class BrowserApplicationUtils {
     page: Page;

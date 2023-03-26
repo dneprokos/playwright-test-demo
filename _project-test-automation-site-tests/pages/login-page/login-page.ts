@@ -1,5 +1,5 @@
 import { BasePage } from "@framework/page-base/base-page";
-import { Page } from "playwright";
+import { Page } from "@playwright/test";
 import { LoginFormFragment } from "./fragments/login-form-fragment";
 
 export class LoginPage extends BasePage {

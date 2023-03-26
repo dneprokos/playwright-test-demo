@@ -1,5 +1,5 @@
 import { BasePage } from "@framework/page-base/base-page";
-import { Page } from "playwright";
+import { Page } from "@playwright/test";
 import { FooterFragment } from "./fragments/footer-fragment";
 import { HeaderFragment } from "./fragments/header-fragment";
 

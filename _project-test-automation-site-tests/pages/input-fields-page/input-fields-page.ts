@@ -1,4 +1,4 @@
-import { Locator, Page } from "playwright";
+import { Locator, Page } from "@playwright/test";
 import { PageWithHeaderAndFooter } from "../_common-pages/page-with-header-and-footer";
 import { InputPageInputFields } from "./fragments-and-models/input-page-input-fields";
 

@@ -1,5 +1,5 @@
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Locator, Page } from "playwright";
+import { Locator, Page } from "@playwright/test";
 
 export class TablePagingFragment extends BaseFragment {
     /**

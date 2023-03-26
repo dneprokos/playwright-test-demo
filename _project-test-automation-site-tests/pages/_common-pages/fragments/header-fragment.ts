@@ -1,5 +1,5 @@
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Page } from "playwright";
+import { Page } from "@playwright/test";
 import { HeaderMenuNames } from "./header-menu-names-enum";
 
 export class HeaderFragment extends BaseFragment {
