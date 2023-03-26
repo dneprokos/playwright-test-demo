@@ -9,7 +9,7 @@ test.describe.parallel('Toggles page tests - Verify page logic', async () => {
         await HomePage.header.clickNavigationMenuButton(HeaderMenuNames.toggles);
     });
 
-    test(` - Should be selected`, async ({ TogglesPage  }) => {
+    test(` - Should be selected`, async ({ TogglesPage, request  }) => {
         //Arrange
 
         //Act

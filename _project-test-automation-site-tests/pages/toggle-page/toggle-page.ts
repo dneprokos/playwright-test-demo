@@ -1,4 +1,4 @@
-import { Page } from "playwright";
+import { Page } from "@playwright/test";
 import { PageWithHeaderAndFooter } from "../_common-pages/page-with-header-and-footer";
 import { ResultFragment } from "./fragments-and-models/result.fragment";
 import { SliderConfigurationFragment } from "./fragments-and-models/slider-configuration.fragment";

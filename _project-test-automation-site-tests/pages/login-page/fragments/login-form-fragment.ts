@@ -1,7 +1,7 @@
 import { EnvironmentParameters } from "@framework/configuration/environment-constants";
 import { getEnv } from "@framework/configuration/environment-helper";
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Page } from "playwright";
+import { Page } from "@playwright/test";
 
 export class LoginFormFragment extends BaseFragment {
     /**

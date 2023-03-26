@@ -1,5 +1,5 @@
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Page } from "playwright";
+import { Page } from "@playwright/test";
 
 export class FilterTableDataFragment extends BaseFragment {
     /**

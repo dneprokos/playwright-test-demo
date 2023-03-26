@@ -8,7 +8,7 @@ test.describe.parallel('Check-boxes page tests - Verify page logic', async () =>
         await new AuthenticationSteps(page).openBasePageAndLoginWithSessionStorage(baseURL as string);
         await HomePage.header.clickNavigationMenuButton(HeaderMenuNames.check_boxes);
     });
-
+    
     test('Check Indeterminate checkbox - Should mark all other checkboxes', 
         async ({ CheckBoxesPage }) => {            
             //Act
