@@ -25,12 +25,12 @@
   "homepage": "https://github.com/dneprokos/playwright-test-demo#readme",
   "devDependencies": {
     "@playwright/test": "^1.32.1",
-    "@types/mssql": "^7.1.5",
+    "@types/mssql": "^8.1.2",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "allure-playwright": "^2.0.0-beta.15",
     "dotenv": "^16.0.0",
     "eslint": "^8.12.0",
-    "mssql": "^8.0.2",
-    "typescript": "^4.6.3"
+    "mssql": "^9.1.1",
+    "typescript": "^5.0.2"
   }
 }
