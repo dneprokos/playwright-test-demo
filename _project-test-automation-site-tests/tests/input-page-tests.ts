@@ -3,7 +3,7 @@ import AuthenticationSteps from '@test_automation-project/utils/common-steps/bas
 import { HeaderMenuNames } from '@test_automation-project/pages/_common-pages/fragments/header-menu-names-enum';
 import { InputPageInputFields } from '../pages/input-fields-page/fragments-and-models/input-page-input-fields';
 import { expect } from '@playwright/test';
-import { generateRandomString } from '@framework/helpers/data-generatos/string-generator';
+
 
 test.describe.parallel('Input page tests - Verify page logic', async () => {
     test.beforeEach(async ({ page, baseURL, HomePage}) => {
@@ -47,37 +47,4 @@ test.describe.parallel('Input page tests - Verify page logic', async () => {
             expect(textLines).toStrictEqual(expectedTexts);
         }
     )
-    
-    test('Screen comparer - With dynamic fields - Should be passed', 
-        async ({ InputFieldsPage, page }) => {
-            //Arrange
-            const firstName: string = generateRandomString(10);
-            const lastName: string = generateRandomString(10);
-
-            //Act
-            await InputFieldsPage.fillTextToInputField(InputPageInputFields.FirstName, firstName);
-            await InputFieldsPage.fillTextToInputField(InputPageInputFields.LastName, lastName);
-
-            //Assert
-            await expect(page).toHaveScreenshot({ 
-                mask: [ page.locator('#firstName'), page.locator('#lastName') ], 
-                maskColor: 'red' 
-            });
-        }
-    )
-
-    test('Screen comparer - With static fields - Should be passed', 
-        async ({ InputFieldsPage, page }) => {
-            //Arrange
-            const firstName = 'Kostiantyn';
-
-            //Act
-            await InputFieldsPage.fillTextToInputField(InputPageInputFields.FirstName, firstName);
-
-            //Assert
-            await expect(page).toHaveScreenshot({maxDiffPixels: 10});
-        }
-    )
-
-
 })

@@ -4,7 +4,7 @@ import AuthenticationSteps from '@root/_project-test-automation-site-tests/utils
 
 test.describe.parallel('Home page tests - Verify page logic', async () => {
     
-    test.beforeEach(async ({ page, baseURL, LoginPage }) => {
+    test.beforeEach(async ({ page, baseURL}) => {
         await new AuthenticationSteps(page).openBasePageAndLoginWithSessionStorage(baseURL as string);
     });
     
@@ -17,8 +17,6 @@ test.describe.parallel('Home page tests - Verify page logic', async () => {
 
             //Assert
             await page.waitForTimeout(5000);
-            
-            
         }
     );
 })
