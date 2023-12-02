@@ -190,6 +190,7 @@ test.describe.parallel('Intercept requests feature', async () => {
 
         //Assert
         await expect.soft(page.locator('div.product-list__title:has-text("Pizza")')).toBeVisible();
+        await page.waitForTimeout(30000);
         //TODO: Add verification Title and one pizza is present
     })
 

@@ -24,22 +24,4 @@ test.describe.parallel('Radio-buttons page tests - Verify page logic', async () 
             expect(actualText).toBe(expectedText);
         })
     })
-
-    test(`Webinar demo`, async ({ page }) => {
-        //Arrange
-        await page.goto('https://qa-automation-test-site.firebaseapp.com/');
-        await page.fill('#login', 'test@test.com');
-        await page.fill('#password', 'test');
-        await page.click('#loginBtn');
-                
-        //Act
-        await page.goto('https://qa-automation-test-site.firebaseapp.com/radio-button')
-        await page.click(`a:has-text("Radio-buttons")`);
-
-        //Assert
-        await page.click(`mat-radio-button:has-text("Summer")`);
-        const expectedText = 'Your favorite season is: Summer';
-        const actualText = await page.textContent(`//div[contains(text(),'Your favorite season is:')]`);
-        expect(actualText).toBe(expectedText);
-    })
 })

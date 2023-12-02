@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, test } from "@playwright/test";
 import { PageWithHeaderAndFooter } from "../_common-pages/page-with-header-and-footer";
 import { CheckBoxNames } from "./checkbox-names-enum";
 
