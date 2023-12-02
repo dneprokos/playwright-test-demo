@@ -1,10 +1,15 @@
 # playwright-test-demo
-UI automation testing framework prepared for demo session 
+UI automation testing framework designed with playwrite/test 
 
 ##Projects description
 - _project-organic-shop-site-tests - e2e tests foo Organic shop test site "https://agular-test-shop-cb70d.firebaseapp.com/"
 - _project-rest-api-tests - just sample for Rest API requests
 - _project-test-automation-site-tests - Specific component pratice tests based on "https://qa-automation-test-site.firebaseapp.com/"
+
+##Prerequisite
+
+1) Node should be installed: https://nodejs.org/en/download
+2) Open root folder in CMD and type command "npm install" or "npm i"
 
 
 ##How to run tests
@@ -13,3 +18,14 @@ UI automation testing framework prepared for demo session
   b) Run specific test - "npx playwright test -g "<test_name>"
 
 Note: Powershell script inside of each project runs specific test
+
+##Useful playwright commands
+
+1) Get version - "npx @playwright/test --version"
+2) Update to latest version - "npm install @playwright/test@latest"
+3) Download new browsers - "npx playwright install"
+4) Update to specific version - "npm install @playwright/test@1.26"
+5) Run plauwright UI mode - "npx playwright test --ui"
+
+Note: A lot of the scripts available in package.json. Just run command "npm run <script_name>"
+

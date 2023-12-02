@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page, test } from "@playwright/test";
 
 export default class BasicSteps {
     page: Page;
@@ -11,10 +11,12 @@ export default class BasicSteps {
     }
 
     async openBasePageAndLoginWithSessionStorage(baseURL: string): Promise<void> {
-        await this.page.goto(baseURL as string);
-        await this.page.context().addInitScript(() => {
-            window.sessionStorage.setItem('user', 'admin');
-        });
-        await this.page.reload();
+        await test.step('Open base page and login with session storage', async () => {
+            await this.page.goto(baseURL as string);
+            await this.page.context().addInitScript(() => {
+                window.sessionStorage.setItem('user', 'admin');
+            });
+            await this.page.reload();
+        }, { box: true });
     }
 }

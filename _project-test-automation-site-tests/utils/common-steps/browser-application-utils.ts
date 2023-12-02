@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page, test } from "@playwright/test";
 
 export default class BrowserApplicationUtils {
     page: Page;
@@ -10,8 +10,10 @@ export default class BrowserApplicationUtils {
     }
 
     async setSessionStorage(key: string, value: string) {
-        await this.page.context().addInitScript(() => {
-            window.sessionStorage.setItem(key, value);
-        });
+        await test.step(`Set session storage with key: ${key} and value: ${value}`, async () => {
+            await this.page.context().addInitScript(() => {
+                window.sessionStorage.setItem(key, value);
+            });
+        }, { box: true });
     }
 }

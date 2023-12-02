@@ -6,7 +6,13 @@
   "scripts": {
     "test": "npx playwright test",
     "test:ui": "npx playwright test --ui",
-    "build": "tsc -b"
+    "build": "tsc -b",
+    "lint": "eslint . --ext .ts",
+    "update": "npm install @playwright/test@latest",
+    "download:chromium": "npx playwright install chromium",
+    "download:firefox": "npx playwright install firefox",
+    "download:webkit": "npx playwright install webkit",
+    "version": "npx @playwright/test --version"
   },
   "repository": {
     "type": "git",
@@ -24,7 +30,7 @@
   },
   "homepage": "https://github.com/dneprokos/playwright-test-demo#readme",
   "devDependencies": {
-    "@playwright/test": "^1.35.1",
+    "@playwright/test": "^1.40.0",
     "@types/mssql": "^8.1.2",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "allure-playwright": "^2.0.0-beta.15",

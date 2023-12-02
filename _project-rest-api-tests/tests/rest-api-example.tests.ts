@@ -6,11 +6,15 @@ test.describe.parallel('API example tests', async () => {
     test('API example - Get Booking By Id',
         async ({request, restApiRequests}) => {
             //Arrange
-            const allBookings = await restApiRequests.bookingRequests(request).getBookingIds();
+            const allBookings = await restApiRequests
+                .bookingRequests(request)
+                .getBookingIds();
             const lastBookingId = allBookings[allBookings.length - 1].bookingid;    
 
             //Act
-            const booking: BookingModel = await restApiRequests.bookingRequests(request).getBookingById(lastBookingId);
+            const booking: BookingModel = await restApiRequests
+                .bookingRequests(request)
+                .getBookingById(lastBookingId);
             
             //Assert
             expect(booking).toStrictEqual({
