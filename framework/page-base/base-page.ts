@@ -8,9 +8,11 @@ export class BasePage {
         
     }
 
-    protected async navigateUrl(url: string): Promise<void> {
+    public async navigateUrl(url: string): Promise<void> {
         await this.page.goto(url);
     }
 
-    //TODO: Implement Logger
+    public async waitForPageLoad(): Promise<void> {
+        await this.page.waitForLoadState('domcontentloaded');
+    }
 }

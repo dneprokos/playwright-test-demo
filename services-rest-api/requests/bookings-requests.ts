@@ -20,7 +20,7 @@ export class BookingsApiRequests {
         const getResponse = await this.request.get(`${this.resourceUrl}/${bookingId}`,
             { headers: { 'accept': 'application/json' } });
         expect(getResponse.status()).toBe(200);
-        let json = await getResponse.json();
+        const json = await getResponse.json();
         console.log(json);
 
         const body: BookingModel = json;

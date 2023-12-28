@@ -23,7 +23,7 @@ export class LoginFormFragment extends BaseFragment {
         await this.fillCredentialsAndClickLoginButton(user, password);
         await this.page
             .waitForLoadState('domcontentloaded')
-            .then(t => console.log('logged in'));
+            .then(() => console.log('logged in'));
         //TODO: Add some element verification step
     }
 }

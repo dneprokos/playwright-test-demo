@@ -1,5 +1,4 @@
 import { APIRequestContext } from "@playwright/test";
-import { AuthorizationApiModel } from "@root/services-rest-api/models/movie-models/authorization-api-model";
 
 export class AuthorizationApiRequests {
     private request: APIRequestContext;

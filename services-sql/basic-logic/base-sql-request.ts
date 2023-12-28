@@ -19,7 +19,7 @@ export class SqlBaseRequest {
             throw new Error("SQL query exception")
         }
         finally {
-            pool.close();
+            void pool.close();
         }
     }
 }
