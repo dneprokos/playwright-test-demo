@@ -22,7 +22,7 @@ export class TableDataFragment extends BaseFragment {
     async getAllTableData(): Promise<TableModel[]> {
         const allRows = await this.page.$$eval('table.mat-table.cdk-table.table tbody tr', (rows) => {
             return rows.map(row => {
-                let rowValuesObject = {} as TableModel;
+                const rowValuesObject = {} as TableModel;
 
                 rowValuesObject.ID = row.querySelector('td:nth-child(1)')?.textContent?.trim() as string;
                 rowValuesObject.Name = row.querySelector('td:nth-child(2)')?.textContent?.trim() as string;
@@ -42,9 +42,9 @@ export class TableDataFragment extends BaseFragment {
         const innerText =  await row.innerText();
         const cellValues = innerText.split('\t').map(value => value.trim());
 
-        let rowValuesObject = {} as TableModel;
+        const rowValuesObject = {} as TableModel;
 
-        for (var i = 0; i < cellValues.length; i++) {
+        for (let i = 0; i < cellValues.length; i++) {
             switch (i) {
                 case 0:
                     rowValuesObject.ID = cellValues[0];

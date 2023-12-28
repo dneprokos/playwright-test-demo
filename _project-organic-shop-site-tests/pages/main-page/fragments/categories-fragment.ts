@@ -1,6 +1,6 @@
 import { waitForElementsCount } from "@framework/helpers/wait-helpers";
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Locator, Page } from "@playwright/test";
+import { Page } from "@playwright/test";
 
 export class CategoriesFragment extends BaseFragment {
     allFilterElementsSelector = `//a[contains(@class, 'list-group-item list-group-item-action')]`;

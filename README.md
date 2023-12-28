@@ -4,7 +4,8 @@ UI automation testing framework designed with playwrite/test
 ##Projects description
 - _project-organic-shop-site-tests - e2e tests foo Organic shop test site "https://agular-test-shop-cb70d.firebaseapp.com/"
 - _project-rest-api-tests - just sample for Rest API requests
-- _project-test-automation-site-tests - Specific component pratice tests based on "https://qa-automation-test-site.firebaseapp.com/"
+- _project-test-automation-site-tests - Specific component practice tests project based on "https://qa-automation-test-site.firebaseapp.com/"
+- _project-herokuapp-components-tests - Very complex component practice tests project based on "https://the-internet.herokuapp.com/"
 
 ##Prerequisite
 
@@ -16,6 +17,7 @@ UI automation testing framework designed with playwrite/test
 1. Navigate project you tests you want to run e.g "cd _project-test-automation-site-tests"
 2 a) Run all tests - "npx playwright test"
   b) Run specific test - "npx playwright test -g "<test_name>"
+  c) Open UI mode and run from it - "npx playwright test --ui"
 
 Note: Powershell script inside of each project runs specific test
 

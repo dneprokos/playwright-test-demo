@@ -1,4 +1,4 @@
-import test, { expect } from '@test_automation-project/playwright-fixture-extention';
+import test from '@test_automation-project/playwright-fixture-extention';
 import { HeaderMenuNames } from '@test_automation-project/pages/_common-pages/fragments/header-menu-names-enum';
 import AuthenticationSteps from '@root/_project-test-automation-site-tests/utils/common-steps/basic-steps';
 

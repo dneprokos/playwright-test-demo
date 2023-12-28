@@ -32,7 +32,8 @@
   "devDependencies": {
     "@playwright/test": "^1.40.0",
     "@types/mssql": "^8.1.2",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "allure-playwright": "^2.0.0-beta.15",
     "dotenv": "^16.0.0",
     "eslint": "^8.12.0",

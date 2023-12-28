@@ -1,8 +1,9 @@
-import { chromium, FullConfig } from "@playwright/test";
-import { LoginPage } from "@test_automation-project/pages/login-page/login-page";
+import { FullConfig } from "@playwright/test";
 
 async function globalSetup(config: FullConfig) {
-    //Some code 
+    //Some code
+    console.log("Global setup");
+    console.log(config);
 }
   
 export default globalSetup;

@@ -39,7 +39,7 @@ export default class InputFieldsPage extends PageWithHeaderAndFooter {
      * @param text Text you want to fill
      * @param delay Delay between each character typing
      */
-    async typeTextToInputField(inputField: InputPageInputFields,  text: string, delay: number = 0): Promise<void> {
+    async typeTextToInputField(inputField: InputPageInputFields,  text: string, delay = 0): Promise<void> {
         await (await this.resolveInputLocator(inputField)).type(text, { delay: delay });
     }
 

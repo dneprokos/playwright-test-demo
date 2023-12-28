@@ -23,7 +23,7 @@ test.describe.parallel('Table page tests - Verify page logic', async () => {
             //Assert
             expect.soft(rows.length).toBe(defaultDataCount);
             const ids: number [] = rows.map(row => Number.parseInt(row.ID));
-            for(var i = 0; i < defaultDataCount; i++) {
+            for(let i = 0; i < defaultDataCount; i++) {
                 expect.soft(ids[i]).toBe(i+1);
             }
         }
