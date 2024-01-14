@@ -34,9 +34,9 @@ jobs:
       run: npx playwright test
       working-directory: _project-herokuapp-components-tests
 
-    - name: Upload Playwright Test Results
+    - name: Upload Playwright JUnit Test Results
       uses: actions/upload-artifact@v2
       if: always() # ensures that reports are uploaded even if tests fail
       with:
         name: playwright-json-test-results
-        path: _project-herokuapp-components-tests/test-results/results.json
+        path: _project-herokuapp-components-tests/test-results/results.xml

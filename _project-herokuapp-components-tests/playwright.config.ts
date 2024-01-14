@@ -13,7 +13,7 @@ const config: PlaywrightTestConfig = {
     workers: getEnvParseNumber(EnvironmentParameters.workers)?? 4,
     //Reporters for the test results
     reporter: [
-        ['json', { outputFile: 'test-results/results.json' }],
+        ['junit', { outputFile: 'test-result/results.xml' }],
         ['allure-playwright'],
         ['list']
     ],
