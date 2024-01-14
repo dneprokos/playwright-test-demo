@@ -38,5 +38,12 @@ jobs:
       uses: actions/upload-artifact@v2
       if: always() # ensures that reports are uploaded even if tests fail
       with:
-        name: playwright-json-test-results
+        name: playwright-junit-test-results
         path: _project-herokuapp-components-tests/test-results/results.xml
+    
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always() # ensures that the report is published even if tests fail
+      with:
+        files: _project-herokuapp-components-tests/test-results/results.xml
+        check_name: Test Results # Optional, name of the check
