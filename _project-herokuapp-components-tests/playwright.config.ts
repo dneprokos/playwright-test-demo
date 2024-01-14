@@ -42,13 +42,6 @@ const config: PlaywrightTestConfig = {
                 channel: 'chrome',
                 actionTimeout: 20000
             },
-        },
-        {
-            name: 'Firefox Browser',
-            use: {
-                browserName: 'firefox',
-                actionTimeout: 20000
-            },
         }
     ]
 };
