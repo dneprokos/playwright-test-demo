@@ -43,5 +43,5 @@ jobs:
       uses: actions/upload-artifact@v2
       if: always() # ensures that reports are uploaded even if tests fail
       with:
-        name: playwright-test-results
-        path: _project-herokuapp-components-tests/test-results
+        name: playwright-json-test-results
+        path: _project-herokuapp-components-tests/test-results/results.json
