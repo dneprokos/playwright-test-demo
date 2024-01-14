@@ -36,7 +36,7 @@ jobs:
       working-directory: _project-herokuapp-components-tests
 
     - name: Run Playwright Tests
-      run: npx playwright test --reporter=junit
+      run: npx playwright test --reporter=json
       working-directory: _project-herokuapp-components-tests
 
     - name: Upload Playwright Test Results
