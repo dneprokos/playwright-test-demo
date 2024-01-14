@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [16.x]
 
     steps:
     - uses: actions/checkout@v2
@@ -28,6 +28,8 @@ jobs:
 
     - name: Setup Playwright
       uses: microsoft/playwright-github-action@v1
+      with:
+        browsers: all
 
     - name: Install Dependencies for Playwright Tests
       run: npm install
