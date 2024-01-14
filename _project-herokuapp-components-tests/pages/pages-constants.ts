@@ -3,7 +3,6 @@ import PageData from "@framework/page-base/page-data";
 export default class PageDataConstants {
     constructor(private baseUrl: string) {
         this.baseUrl = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
-        console.log(`Base URL: ${this.baseUrl}`);
     }
 
     readonly mainPage = new PageData(this.baseUrl + '/', 'Main Page');

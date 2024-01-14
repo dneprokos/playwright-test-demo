@@ -36,5 +36,12 @@ jobs:
       working-directory: _project-herokuapp-components-tests
 
     - name: Run Playwright Tests
-      run: npx playwright test
+      run: npx playwright test --reporter=junit
       working-directory: _project-herokuapp-components-tests
+
+    - name: Upload Playwright Test Results
+      uses: actions/upload-artifact@v2
+      if: always() # ensures that reports are uploaded even if tests fail
+      with:
+        name: playwright-test-results
+        path: _project-herokuapp-components-tests/test-results

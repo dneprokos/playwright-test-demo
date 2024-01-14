@@ -14,7 +14,8 @@ const config: PlaywrightTestConfig = {
     //Reporters for the test results
     reporter: [
         ['allure-playwright'],
-        ['list']
+        ['list'],
+        ['junit', { outputFile: 'test-results.xml' }]
     ],
     //globalSetup: require.resolve('./global-setup'),
     //globalTeardown: require.resolve('./global-teardown'),
