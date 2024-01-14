@@ -1,11 +1,11 @@
-name: Node.js Build on PR
+name: Node.js Build and Playwright Test on PR
 
 on:
   pull_request:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -14,11 +14,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install Dependencies
+
+    - name: Install Root Dependencies
       run: npm install
+
     - name: Run Build
       run: npm run build
+
+    - name: Setup Playwright
+      uses: microsoft/playwright-github-action@v1
+
+    - name: Install Dependencies for Playwright Tests
+      run: npm install
+      working-directory: _project-herokuapp-components-tests
+
+    - name: Run Playwright Tests
+      run: npx playwright test
+      working-directory: _project-herokuapp-components-tests
