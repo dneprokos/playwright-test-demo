@@ -3,6 +3,9 @@ import MainPage from "./pages/_main-page/main-page";
 import ABTestingPage from './pages/ab-testing-page/ab-testing-page';
 import AddRemoveElementPage from './pages/add-remove-element-page/add-remove-element-page';
 import BasicAuthPage from './pages/basic-auth-page/basic-auth-page';
+import DataTablesPage from './pages/data-tables-page/data-tables-page';
+import DragAndDropPage from './pages/drag-and-drop-page/drag-and-drop-page';
+import JavaScriptAlertsPage from './pages/javascript-alerts-page/javascript-alerts-page';
 
 
 type Pages = {
@@ -10,6 +13,9 @@ type Pages = {
     abTestPage: ABTestingPage;
     addRemoveElementPage: AddRemoveElementPage;
     basicAuthPage: BasicAuthPage;
+    dataTablesPage: DataTablesPage;
+    dragAndDropPage: DragAndDropPage;
+    javaScriptAlertsPage: JavaScriptAlertsPage;
 }
 
 export const test = base.extend<Pages>({
@@ -24,6 +30,15 @@ export const test = base.extend<Pages>({
     },
     basicAuthPage: async ({page}, use) => {
         await use(new BasicAuthPage(page));
+    },
+    dataTablesPage: async ({page}, use) => {
+        await use(new DataTablesPage(page));
+    },
+    dragAndDropPage: async ({page}, use) => {
+        await use(new DragAndDropPage(page));
+    },
+    javaScriptAlertsPage: async ({page}, use) => {
+        await use(new JavaScriptAlertsPage(page));
     }
 });
 

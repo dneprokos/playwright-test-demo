@@ -1,9 +1,7 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-      //"esModuleInterop": true,
-      "baseUrl": "./",
-      "outDir": "_project-organic-shop-site-tests/dist/out-tsc",
+      "baseUrl": ".",
       "forceConsistentCasingInFileNames": true,
       "strict": true,
       "noImplicitReturns": true,
