@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/dneprokos/playwright-test-demo#readme",
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
+    "@playwright/test": "^1.41.1",
     "@types/mssql": "^8.1.2",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",

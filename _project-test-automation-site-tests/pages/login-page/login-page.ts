@@ -3,6 +3,8 @@ import { Page } from "@playwright/test";
 import { LoginFormFragment } from "./fragments/login-form-fragment";
 
 export class LoginPage extends BasePage {
+    loginForm: LoginFormFragment;
+
     /**
      *
      */
@@ -10,6 +12,4 @@ export class LoginPage extends BasePage {
         super(page);
         this.loginForm = new LoginFormFragment(page);
     }
-
-    loginForm: LoginFormFragment;
 }

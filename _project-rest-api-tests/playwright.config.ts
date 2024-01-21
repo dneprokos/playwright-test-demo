@@ -1,6 +1,6 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
-import { getEnv, getEnvParseNumber } from '@framework/configuration/environment-helper';
+import { PlaywrightTestConfig } from '@playwright/test';
 import { EnvironmentParameters } from '@framework/configuration/environment-constants';
+import { getEnv, getEnvParseNumber } from '@framework/configuration/environment-helper';
 
 const config: PlaywrightTestConfig = {
     timeout: getEnvParseNumber(EnvironmentParameters.maxTestRunTime),
