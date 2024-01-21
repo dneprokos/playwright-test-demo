@@ -7,6 +7,14 @@ test.describe.parallel('Drag&Drop page tests - Verify page logic', async () => {
         await mainPage.waitForPageLoad();
     });
 
-    
+    test('Drag and drop A to B - Should be exchanged', async ({ dragAndDropPage }) => {
+        //Arrange
+
+        //Act
+        await dragAndDropPage.dragAndDropSquareAtoSquareB();
+
+        //Assert
+        expect(await dragAndDropPage.getSquareAText()).toBe('B');
+    });
 
 });

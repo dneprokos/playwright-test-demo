@@ -9,7 +9,5 @@ export default class DataTablesPage extends BasePage
     constructor(page: Page) {
         super(page);
         this.tableOne = new ExampleOneTable(page);
-    }
-    
-    
+    } 
 }
