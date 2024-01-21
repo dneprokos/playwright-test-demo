@@ -6,6 +6,7 @@ import BasicAuthPage from './pages/basic-auth-page/basic-auth-page';
 import DataTablesPage from './pages/data-tables-page/data-tables-page';
 import DragAndDropPage from './pages/drag-and-drop-page/drag-and-drop-page';
 import JavaScriptAlertsPage from './pages/javascript-alerts-page/javascript-alerts-page';
+import FramesPage from './pages/frames-page/frames-page';
 
 
 type Pages = {
@@ -16,6 +17,7 @@ type Pages = {
     dataTablesPage: DataTablesPage;
     dragAndDropPage: DragAndDropPage;
     javaScriptAlertsPage: JavaScriptAlertsPage;
+    framesPage: FramesPage;
 }
 
 export const test = base.extend<Pages>({
@@ -39,6 +41,9 @@ export const test = base.extend<Pages>({
     },
     javaScriptAlertsPage: async ({page}, use) => {
         await use(new JavaScriptAlertsPage(page));
+    },
+    framesPage: async ({page}, use) => {
+        await use(new FramesPage(page));
     }
 });
 
