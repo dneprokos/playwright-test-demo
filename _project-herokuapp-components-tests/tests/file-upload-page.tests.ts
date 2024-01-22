@@ -9,7 +9,7 @@ test.describe.parallel('File Upload page tests - Verify page logic', async () =>
         await mainPage.waitForPageLoad();
     });
 
-    test('Upload file', async ({ uploadFilePage }) => {
+    test('Upload file', async ({ uploadFilePage, page }) => {
         //Arrange
         const fileName = 'upload_file.txt';
         const filePath = path.resolve(__dirname, `../test-data/${fileName}`); //File should be in the specified folder
