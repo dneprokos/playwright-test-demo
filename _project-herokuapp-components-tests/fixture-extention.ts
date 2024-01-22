@@ -7,6 +7,7 @@ import DataTablesPage from './pages/data-tables-page/data-tables-page';
 import DragAndDropPage from './pages/drag-and-drop-page/drag-and-drop-page';
 import JavaScriptAlertsPage from './pages/javascript-alerts-page/javascript-alerts-page';
 import FramesPage from './pages/frames-page/frames-page';
+import UploadFilePage from './pages/upload-file-page/upload-file-page';
 
 
 type Pages = {
@@ -18,6 +19,7 @@ type Pages = {
     dragAndDropPage: DragAndDropPage;
     javaScriptAlertsPage: JavaScriptAlertsPage;
     framesPage: FramesPage;
+    uploadFilePage: UploadFilePage;
 }
 
 export const test = base.extend<Pages>({
@@ -44,7 +46,10 @@ export const test = base.extend<Pages>({
     },
     framesPage: async ({page}, use) => {
         await use(new FramesPage(page));
-    }
+    },
+    uploadFilePage: async ({page}, use) => {
+        await use(new UploadFilePage(page));
+    },
 });
 
 export { expect } from '@playwright/test';
