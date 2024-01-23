@@ -9,6 +9,7 @@ import JavaScriptAlertsPage from './pages/javascript-alerts-page/javascript-aler
 import FramesPage from './pages/frames-page/frames-page';
 import UploadFilePage from './pages/upload-file-page/upload-file-page';
 import DownloadFilePage from './pages/download-file-page/download-file-page';
+import ShadowDomPage from './pages/shadow-dom-page/shadow-dom-page';
 
 
 type Pages = {
@@ -22,6 +23,7 @@ type Pages = {
     framesPage: FramesPage;
     uploadFilePage: UploadFilePage;
     downloadFilePage: DownloadFilePage;
+    shadowDomPage: ShadowDomPage;
 }
 
 export const test = base.extend<Pages>({
@@ -54,7 +56,10 @@ export const test = base.extend<Pages>({
     },
     downloadFilePage: async ({page}, use) => {
         await use(new DownloadFilePage(page));
-    }
+    },
+    shadowDomPage: async ({page}, use) => {
+        await use(new ShadowDomPage(page));
+    },
 });
 
 export { expect } from '@playwright/test';
