@@ -11,7 +11,7 @@ test.describe.parallel('File Download page tests - Verify page logic', async () 
 
     test('Download file', async ({ downloadFilePage }) => {
         // Arrange
-        const expectedFileName = 'USA.png';
+        const expectedFileName: string = await downloadFilePage.getFirstLinkText();
         const downloadFolderPath = path.resolve(__dirname, `../test-data`); // Update this path
         const savePath = path.join(downloadFolderPath, expectedFileName);
     
