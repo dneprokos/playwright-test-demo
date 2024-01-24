@@ -1,32 +1,33 @@
 {
-    "compileOnSave": false,
-    "compilerOptions": {
-      "baseUrl": ".",
-      "forceConsistentCasingInFileNames": true,
-      "strict": true,
-      "noImplicitReturns": true,
-      "noFallthroughCasesInSwitch": true,
-      "sourceMap": false,
-      "declaration": false,
-      "downlevelIteration": true,
-      "experimentalDecorators": true,
-      "moduleResolution": "node",
-      "importHelpers": true,
-      "target": "es2017",
-      "module": "es2020",
-      "outDir": "./dist",
-      "lib": [
-        "es2018",
-        "dom"
-      ],
-      "paths": {
-          "@framework/*": ["framework/*"],
-          "@root/*":["./*"],
-          "@sql/*":["services-sql/*"],
-          "@api/*":["services-rest-api/*"],
-          "@organic-shop/*": ["_project-organic-shop-site-tests/*"],
-          "@rest-tests/*": ["_project-rest-api-tests/*"],
-          "@test_automation-project/*": ["_project-test-automation-site-tests/*"]
-      }
-    },
-  }
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "ESNext", // Use the latest ECMAScript features
+    "module": "CommonJS", // Playwright tests run in a Node.js environment
+    "lib": ["esnext", "dom"], // Include typings for both browser and Node.js globals
+    "strict": true, // Enable all strict type-checking options
+    "esModuleInterop": true, // Allows default imports from modules with no default export
+    "moduleResolution": "node", // Use Node.js module resolution
+    "resolveJsonModule": true, // Can import JSON files directly
+    "downlevelIteration": true, // Needed for properly iterating iterables in ES5/ES3
+    "isolatedModules": true, // Ensures each file can be safely transpiled alone
+    "noEmit": true, // Do not emit outputs (as Playwright does not use the output)
+    "baseUrl": ".", // Base directory to resolve non-relative module names
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@framework/*": ["framework/*"],
+      "@root/*":["./*"],
+      "@sql/*":["services-sql/*"],
+      "@api/*":["services-rest-api/*"],
+      "@organic-shop/*": ["_project-organic-shop-site-tests/*"],
+      "@rest-tests/*": ["_project-rest-api-tests/*"],
+      "@test_automation-project/*": ["_project-test-automation-site-tests/*"]
+    }
+  },
+  "include": [
+    "**/*.ts" // Include all TypeScript files
+  ],
+  "exclude": [
+    "node_modules", // Exclude dependency files
+    "dist" // Exclude build output directory
+  ]
+}
