@@ -28,7 +28,6 @@ jobs:
 
     - name: Install Dependencies for Playwright Tests
       run: npx playwright install --with-deps
-      working-directory: _project-herokuapp-components-tests
 
     - name: Run Playwright Tests
       run: npx playwright test
