@@ -1,26 +1,22 @@
-import { FullConfig } from "@playwright/test";
 import { exec } from 'child_process';
+import { promisify } from 'util';
 
-async function globalTeardown(config: FullConfig) {
-    // Stop and remove the Docker container as a global teardown
-    const stopCommand = 'docker stop $(docker ps -q --filter ancestor=gprestes/the-internet)';
-    const removeCommand = 'docker rm $(docker ps -a -q --filter ancestor=gprestes/the-internet)';
+const execAsync = promisify(exec);
 
-    exec(stopCommand, (err, stdout) => {
-      if (err) {
-        console.error(`Error stopping Docker container: ${err}`);
-        return;
-      }
-      console.log(`Stopped Docker container: ${stdout}`);
-    });
+async function stopDockerContainer() {
+    const dockerStopCommand = 'docker stop heroku-app-container'; // Adjust this command.
+    try {
+        const { stdout, stderr } = await execAsync(dockerStopCommand);
+        console.log('Docker Stop STDOUT:', stdout);
+        console.error('Docker Stop STDERR:', stderr);
+    } catch (error) {
+        console.error('Error stopping Docker container:', error);
+        // Optionally handle the error, but generally, teardown errors are not re-thrown.
+    }
+}
 
-    exec(removeCommand, (err, stdout) => {
-      if (err) {
-        console.error(`Error removing Docker container: ${err}`);
-        return;
-      }
-      console.log(`Removed Docker container: ${stdout}`);
-    });
+async function globalTeardown() {
+  await stopDockerContainer();
 }
 
 export default globalTeardown;

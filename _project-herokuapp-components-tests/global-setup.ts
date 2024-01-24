@@ -1,31 +1,26 @@
-import { FullConfig } from "@playwright/test";
-import { spawn } from 'child_process';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { writeFile } from 'fs/promises';
 
-async function globalSetup(config: FullConfig) {
-    //Some code
-    console.log("Global setup");
-    console.log(config);
+const execAsync = promisify(exec);
 
-    // Run Docker container as a global setup
-    const dockerProcess = spawn('docker', ['run', '-d', '-p', '9080:5000', 'gprestes/the-internet']);
+async function startDockerContainer() {
+    const dockerStartCommand = 'docker run -d -p 5000:5000 -h heroku-app-container gprestes/the-internet';
+    try {
+        const { stdout, stderr } = await execAsync(dockerStartCommand);
+        console.log('Docker Start STDOUT:', stdout);
+        console.error('Docker Start STDERR:', stderr);
+    } catch (error) {
+        console.error('Error starting Docker container:', error);
+        throw error; // Re-throw the error to fail the setup process.
+    }
+}
 
-    dockerProcess.stdout.on('data', (data) => {
-      console.log(`Docker container output: ${data}`);
-    });
+async function globalSetup() {
+  await startDockerContainer();
+  const appUrl = 'http://localhost:5000'; // Adjust as needed for your app.
 
-    //await new Promise(resolve => setTimeout(resolve, 5000));
-
-    dockerProcess.stderr.on('data', (data) => {
-      console.error(`Error starting Docker container: ${data}`);
-    });
-
-    //await new Promise(resolve => setTimeout(resolve, 5000));
-
-    dockerProcess.on('close', (code) => {
-      console.log(`Docker container process exited with code ${code}`);
-    });
-
-    //await new Promise(resolve => setTimeout(resolve, 5000));
+  await writeFile('playwright-config.json', JSON.stringify({ appUrl }));
 }
   
 export default globalSetup;
