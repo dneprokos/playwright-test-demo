@@ -17,8 +17,8 @@ const config: PlaywrightTestConfig = {
         ['allure-playwright'],
         ['list']
     ],
-    //globalSetup: require.resolve('./global-setup'),
-    //globalTeardown: require.resolve('./global-teardown'),
+    // globalSetup: require.resolve('./global-setup'),
+    // globalTeardown: require.resolve('./global-teardown'),
     //Global options for all tests
     use: {
         //Base URL for the tests

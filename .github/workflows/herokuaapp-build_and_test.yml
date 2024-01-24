@@ -1,11 +1,13 @@
-name: Node.js Build and Playwright Test on PR
+name: Build and test Herokuapp
 
 on:
   pull_request:
     branches: [ main ]
+    paths:
+      - '_project-herokuapp-components-tests/**'
 
 jobs:
-  build-and-test:
+  build_and_test:
     runs-on: ubuntu-latest
 
     strategy:
