@@ -6,6 +6,10 @@ export default class DownloadFilePage extends BasePage {
         super(page);
     }
 
+    async getFirstLinkText(): Promise<string> {
+        return await this.page.textContent('div.example > a') as string;
+    }
+
     async downloadFile(expectedFileName: string, savePath: string) {
         // Start download
         const [download] = await Promise.all([

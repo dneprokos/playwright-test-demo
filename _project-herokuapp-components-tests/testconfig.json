@@ -1,0 +1,9 @@
+{
+    "extends": "../tsconfig.json",
+    "compierOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@framework/*": ["../framework/*"]
+        }
+    }
+}
