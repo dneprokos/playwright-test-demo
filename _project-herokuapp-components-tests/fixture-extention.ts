@@ -10,6 +10,7 @@ import FramesPage from './pages/frames-page/frames-page';
 import UploadFilePage from './pages/upload-file-page/upload-file-page';
 import DownloadFilePage from './pages/download-file-page/download-file-page';
 import ShadowDomPage from './pages/shadow-dom-page/shadow-dom-page';
+import FormAuthenticationPage from './pages/form-authentication-page/form-authentication-page';
 
 
 type Pages = {
@@ -24,6 +25,7 @@ type Pages = {
     uploadFilePage: UploadFilePage;
     downloadFilePage: DownloadFilePage;
     shadowDomPage: ShadowDomPage;
+    formAuthenticationPage: FormAuthenticationPage;
 }
 
 export const test = base.extend<Pages>({
@@ -60,6 +62,9 @@ export const test = base.extend<Pages>({
     shadowDomPage: async ({page}, use) => {
         await use(new ShadowDomPage(page));
     },
+    formAuthenticationPage: async ({page}, use) => {
+        await use(new FormAuthenticationPage(page));
+    }
 });
 
 export { expect } from '@playwright/test';
