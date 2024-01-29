@@ -37,7 +37,7 @@ const config: PlaywrightTestConfig = {
     //Project options
     projects: [
         {
-            name: 'Chrome Browser',
+            name: 'Local Chrome',
             use: {
                 browserName: 'chromium',
                 channel: 'chrome',
