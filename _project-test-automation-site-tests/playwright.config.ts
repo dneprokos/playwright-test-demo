@@ -25,7 +25,7 @@ const config: PlaywrightTestConfig = {
             use: {
                 browserName: 'chromium',
                 channel: 'chrome',
-                actionTimeout: 20000
+                actionTimeout: 20000,
             },
         },
         {

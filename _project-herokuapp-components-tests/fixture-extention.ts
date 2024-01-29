@@ -11,6 +11,9 @@ import UploadFilePage from './pages/upload-file-page/upload-file-page';
 import DownloadFilePage from './pages/download-file-page/download-file-page';
 import ShadowDomPage from './pages/shadow-dom-page/shadow-dom-page';
 import FormAuthenticationPage from './pages/form-authentication-page/form-authentication-page';
+import KeyPressesPage from './pages/key-presses-page/key-presses-page';
+import WindowsPage from './pages/windows-page/windows-page';
+import HorizontalSliderPage from './pages/horizontal-slider-page/horizontal-slider-page';
 
 
 type Pages = {
@@ -26,6 +29,9 @@ type Pages = {
     downloadFilePage: DownloadFilePage;
     shadowDomPage: ShadowDomPage;
     formAuthenticationPage: FormAuthenticationPage;
+    keyPressesPage: KeyPressesPage;
+    windowPage: WindowsPage;
+    horizontalSliderPage: HorizontalSliderPage;
 }
 
 export const test = base.extend<Pages>({
@@ -64,7 +70,16 @@ export const test = base.extend<Pages>({
     },
     formAuthenticationPage: async ({page}, use) => {
         await use(new FormAuthenticationPage(page));
-    }
+    },
+    keyPressesPage: async ({page}, use) => {
+        await use(new KeyPressesPage(page));
+    },
+    windowPage: async ({page}, use) => {
+        await use(new WindowsPage(page));
+    },
+    horizontalSliderPage: async ({page}, use) => {
+        await use(new HorizontalSliderPage(page));
+    },
 });
 
 export { expect } from '@playwright/test';
