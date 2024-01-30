@@ -1,4 +1,4 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
+import { devices, type PlaywrightTestConfig } from '@playwright/test';
 import { getEnv, getEnvParseNumber } from '@framework/configuration/environment-helper';
 import { EnvironmentParameters } from '@framework/configuration/environment-constants';
 
