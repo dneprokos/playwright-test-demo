@@ -1,0 +1,47 @@
+# Use the latest Node.js image as the base
+FROM node:latest
+
+# Set the working directory to the root of your project
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json (or yarn.lock) from the root directory
+COPY package*.json ./
+
+# Install application dependencies including Playwright
+RUN npm install
+
+# Install dependencies for Playwright tests
+RUN npx playwright install --with-deps
+
+# Install Allure command-line tool for report generation
+RUN npm install -g allure-commandline
+
+# Install a simple HTTP server to serve the Allure report
+RUN npm install -g http-server
+
+# Copy the entire project to the working directory
+COPY . .
+
+# Change the working directory to the test project directory
+WORKDIR /usr/src/app/_project-herokuapp-components-tests
+
+# Run the build script for your application (if necessary)
+RUN npm run build
+
+# Run tests and generate raw Allure results
+# Using `|| true` to ensure that the docker build doesn't fail if tests do
+RUN npm run test || true
+
+# Generate Allure reports from the raw results
+# The results are in the current directory (./allure-results)
+RUN allure generate ./allure-results --clean -o ./allure-report || true
+
+# List the contents of the allure-report directory for debugging
+RUN ls -al ./allure-report
+
+# Expose port 8080 for the Allure report server
+EXPOSE 8080
+
+# Serve the Allure report on container start
+# The report is generated in the current directory (./allure-report)
+CMD ["http-server", "allure-report", "-p", "8080", "-c-1"]
