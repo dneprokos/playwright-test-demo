@@ -14,6 +14,8 @@ import FormAuthenticationPage from './pages/form-authentication-page/form-authen
 import KeyPressesPage from './pages/key-presses-page/key-presses-page';
 import WindowsPage from './pages/windows-page/windows-page';
 import HorizontalSliderPage from './pages/horizontal-slider-page/horizontal-slider-page';
+import DropDownPage from './pages/drop-down-page/drop-down-page';
+import CheckboxesPage from './pages/checkboxes-page/checkboxes-page';
 
 
 type Pages = {
@@ -32,6 +34,8 @@ type Pages = {
     keyPressesPage: KeyPressesPage;
     windowPage: WindowsPage;
     horizontalSliderPage: HorizontalSliderPage;
+    dropDownPage: DropDownPage;
+    checkboxePage: CheckboxesPage;
 }
 
 export const test = base.extend<Pages>({
@@ -80,6 +84,12 @@ export const test = base.extend<Pages>({
     horizontalSliderPage: async ({page}, use) => {
         await use(new HorizontalSliderPage(page));
     },
+    dropDownPage: async ({page}, use) => {
+        await use(new DropDownPage(page));
+    },
+    checkboxePage: async ({page}, use) => {
+        await use(new CheckboxesPage(page));
+    }
 });
 
 export { expect } from '@playwright/test';

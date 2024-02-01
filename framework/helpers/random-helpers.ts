@@ -3,4 +3,8 @@ export class RandomHelper {
         const index = Math.floor(Math.random() * array.length);
         return array[index];
     }
+
+    getRandomIndex(max: number): number {
+        return Math.floor(Math.random() * max);
+    }
 }

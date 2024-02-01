@@ -16,5 +16,4 @@ test.describe.parallel('Drag&Drop page tests - Verify page logic', async () => {
         //Assert
         expect(await dragAndDropPage.getSquareAText()).toBe('B');
     });
-
 });
