@@ -7,6 +7,7 @@ export class EnvironmentParameters {
     static restBookingBaseUrl = 'REST_BOOKING_BASE_URL';
     static user = 'USER';
     static password = 'PASSWORD';
+    static viewPort = 'VIEWPORT';
 }
 
 

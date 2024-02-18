@@ -2,6 +2,8 @@ import { devices, type PlaywrightTestConfig } from '@playwright/test';
 import { getEnv, getEnvParseNumber } from '@framework/configuration/environment-helper';
 import { EnvironmentParameters } from '@framework/configuration/environment-constants';
 
+const Headless = getEnv(EnvironmentParameters.headelessBrowser) === 'true';
+
 const config: PlaywrightTestConfig = {
     //Will be a filter for tests
     testMatch: 'tests/*tests.ts',
@@ -10,11 +12,20 @@ const config: PlaywrightTestConfig = {
     //Maximum retries for a failed test
     retries: getEnvParseNumber(EnvironmentParameters.retryFailed)?? 1,
     //Maximum number of workers. Parallel execution
-    workers: getEnvParseNumber(EnvironmentParameters.workers)?? 4,
+    workers: getEnvParseNumber(EnvironmentParameters.workers)?? 10,
     //Reporters for the test results
     reporter: [
         ['junit', { outputFile: 'test-results/results.xml' }],
-        ['allure-playwright'],
+        ['allure-playwright', {
+            details: true,
+            outputFolder: './allure-results',
+            suiteTitle: false,
+            environmentInfo: {
+                FRAMEWORK: 'Playwright',
+                HEADLESS: Headless,
+                E2E_NODE_VERSION: process.version,
+                E2E_OS: process.platform },
+        }],
         ['list']
     ],
     // globalSetup: require.resolve('./global-setup'),
@@ -24,7 +35,7 @@ const config: PlaywrightTestConfig = {
         //Base URL for the tests
         baseURL: getEnv(EnvironmentParameters.baseUrl),
         //Headless browser
-        headless: getEnv(EnvironmentParameters.headelessBrowser) === 'true',
+        headless: Headless,
         //Browser viewport
         viewport: { width: 2045, height: 960 },
         //Color scheme for the browser
@@ -37,7 +48,7 @@ const config: PlaywrightTestConfig = {
     //Project options
     projects: [
         {
-            name: 'Local Chrome',
+            name: 'Local Chrome tests',
             use: {
                 browserName: 'chromium',
                 channel: 'chrome',
