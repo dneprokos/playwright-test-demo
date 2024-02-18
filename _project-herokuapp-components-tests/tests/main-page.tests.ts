@@ -1,6 +1,7 @@
 import PageData from "@framework/page-base/page-data";
 import { test, expect } from "../fixture-extention";
 import PageDataConstants from "../pages/pages-constants";
+import { allure } from "allure-playwright";
 
 test.describe.parallel('Main page tests - Verify page logic', async () => {
     test.beforeEach(async ({ mainPage, baseURL }) => {
@@ -17,7 +18,10 @@ test.describe.parallel('Main page tests - Verify page logic', async () => {
             .filter(value =>  value instanceof PageData);
 
         //Act      
-        const actualPagesData: PageData[] = await mainPage.getPagesData();
+        const actualPagesData: PageData[] = await mainPage.getPagesData();        
+        await allure.attachment("ATTACH_ACTUAL_PAGES", JSON.stringify(actualPagesData), {
+            contentType: "application/json",
+        });
 
         //Assert
         expect.soft(await mainPage.getTopPageHeader()).toBe('Welcome to the-internet');

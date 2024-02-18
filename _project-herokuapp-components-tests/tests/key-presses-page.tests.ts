@@ -1,3 +1,4 @@
+import { allure } from "allure-playwright";
 import { test, expect } from "../fixture-extention";
 import PageDataConstants from "../pages/pages-constants";
 
@@ -7,7 +8,24 @@ test.describe.parallel('Key presses page tests - Verify page logic', async () =>
         await mainPage.waitForPageLoad();
     });
 
-    test('Press key and read values', async ({ page, keyPressesPage }) => {
+    const KEYS = ['a', 'Shift', 1, 'Enter', 'Space']
+
+    KEYS.forEach(key => {
+        test(`Press ${key} key and make sure it was pressed`, async ({ page, keyPressesPage }) => {
+            // Arrange
+            await allure.parameter("KEY", key.toString());
+            const expectedValue = `You entered: ${key.toString().toUpperCase()}`;
+
+            // Act
+            await page.keyboard.press(key.toString());
+            const actualValue = await keyPressesPage.getEnteredKey();
+
+            // Assert
+            expect(actualValue).toBe(expectedValue);
+        });
+    });
+
+    test('Press keys sequentially and make sure keys were updated', async ({ page, keyPressesPage }) => {
         // Arrange
         const key1 = 'a';
         const key2 = 'Shift';
