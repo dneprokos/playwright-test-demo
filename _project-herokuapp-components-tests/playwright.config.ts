@@ -6,7 +6,7 @@ const Headless = getEnv(EnvironmentParameters.headelessBrowser) === 'true';
 
 const config: PlaywrightTestConfig = {
     //Will be a filter for tests
-    testMatch: 'tests/*tests.ts',
+    testMatch: ['tests/*tests.ts', 'tests/**/*tests.ts'],
     //Maximum time for a test to run
     timeout: getEnvParseNumber(EnvironmentParameters.maxTestRunTime),
     //Maximum retries for a failed test
