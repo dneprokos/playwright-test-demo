@@ -5,7 +5,7 @@ let isServiceAvailable = true;
 
 test.describe.parallel('MOVIES API - Genres', () => {
     test.beforeAll(async () => {
-        isServiceAvailable = await new MoviesApiService('http://localhost:5000/api').isServiceAvailable();
+        isServiceAvailable = await new MoviesApiService().isServiceAvailable();
     });
 
     test.beforeEach(async () => {
@@ -15,12 +15,12 @@ test.describe.parallel('MOVIES API - Genres', () => {
 
     test('GET /genre/:id - id exist - Should be OK and returned', async ( ) => {
         // Arrange
-        const authResponse = await new MoviesApiService('http://localhost:5000/api')
+        const authResponse = await new MoviesApiService()
             .authorizationRequests()
             .generateAuthToken('test', 'testpassword')
             
         // Act
-        const genreResponse = await new MoviesApiService('http://localhost:5000/api')
+        const genreResponse = await new MoviesApiService()
             .genresRequests()
             .getGenreById(1, authResponse.accessToken);
         
