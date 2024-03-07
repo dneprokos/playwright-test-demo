@@ -3,7 +3,6 @@ import PageDataConstants from "../pages/pages-constants";
 
 test.describe.parallel('Checkboxes page tests - Verify page logic', async () => {
     test.beforeEach(async ({ mainPage, baseURL }) => {
-        //mainPage.page.on('console', message => console.log(message.text()));
         await mainPage.navigateUrl(new PageDataConstants(baseURL as string).checkboxesPage.getUrlPath());
         await mainPage.waitForPageLoad();
     });
@@ -18,7 +17,7 @@ test.describe.parallel('Checkboxes page tests - Verify page logic', async () => 
         await checkboxePage.checkBox2.uncheck();
         
         //Assert
-        expect.soft(await checkboxePage.checkBox1.isChecked()).toBeTruthy();
-        expect.soft(await checkboxePage.checkBox2.isChecked()).toBeFalsy();
+        await expect.soft(checkboxePage.checkBox1).toBeChecked();
+        await expect.soft(checkboxePage.checkBox2).not.toBeChecked();
     });
 });

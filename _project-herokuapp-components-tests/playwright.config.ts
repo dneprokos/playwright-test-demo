@@ -28,7 +28,7 @@ const config: PlaywrightTestConfig = {
         }],
         ['list']
     ],
-    // globalSetup: require.resolve('./global-setup'),
+    globalSetup: require.resolve('./global-setup'),
     // globalTeardown: require.resolve('./global-teardown'),
     //Global options for all tests
     use: {

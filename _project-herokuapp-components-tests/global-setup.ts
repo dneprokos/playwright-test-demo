@@ -1,7 +1,5 @@
-import { allure } from "allure-playwright";
-
 async function globalSetup() {
-    await allure.suite('Global setup');
+    console.log('Global setup completed');
 }
   
 export default globalSetup;

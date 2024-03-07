@@ -8,6 +8,11 @@ export class EnvironmentParameters {
     static user = 'USER';
     static password = 'PASSWORD';
     static viewPort = 'VIEWPORT';
+    static moviesApiBaseUrl = 'MOVIES_API_BASE_URL';
+    static moviesApiRegularUsername = 'MOVIES_API_REGULAR_USERNAME';
+    static moviesApiRegularPassword = 'MOVIES_API_REGULAR_PASSWORD';
+    static moviesApiAdminUsername = 'MOVIES_API_ADMIN_USERNAME';
+    static moviesApiAdminPassword = 'MOVIES_API_ADMIN_PASSWORD';
 }
 
 
