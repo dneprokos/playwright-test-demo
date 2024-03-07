@@ -18,7 +18,7 @@ test.describe.parallel('Checkboxes page tests - Verify page logic', async () => 
         await checkboxePage.checkBox2.uncheck();
         
         //Assert
-        expect.soft(await checkboxePage.checkBox1.isChecked()).toBeTruthy();
-        expect.soft(await checkboxePage.checkBox2.isChecked()).toBeFalsy();
+        await expect.soft(checkboxePage.checkBox1).toBeChecked();
+        await expect.soft(checkboxePage.checkBox2).not.toBeChecked();
     });
 });

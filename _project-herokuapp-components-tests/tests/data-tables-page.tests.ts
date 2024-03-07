@@ -24,4 +24,13 @@ test.describe.parallel('Sortable tables page tests - Verify page logic', async (
         //Assert
         expect(tableResults).toEqual(expectedContent);
     });
+
+    test('Verify table 2 can be sorted by last name', async ({ dataTablesPage }) => {
+        //Arrange
+
+        //Act
+        await dataTablesPage.tableTwo.getDynamicTableRows();
+
+        //Assert
+    });
 });
