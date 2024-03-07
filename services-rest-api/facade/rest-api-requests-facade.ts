@@ -11,7 +11,7 @@ export class RestApiRequestsFacade {
         this.baseUrl = baseUrl;
     }
 
-    bookingRequests(requestContext: APIRequestContext) {
+    bookingRequests(requestContext: APIRequestContext): BookingsApiRequests {
         return new BookingsApiRequests(requestContext, this.baseUrl);
     }
 }

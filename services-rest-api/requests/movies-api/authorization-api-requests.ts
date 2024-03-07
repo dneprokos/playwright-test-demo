@@ -1,5 +1,5 @@
-import { APIResponse, request } from "@playwright/test";
-import { AuthorizationApiModel } from "@root/services-rest-api/models/movie-models/authorization-api-model";
+import { APIResponse, request, expect } from "@playwright/test";
+import AuthorizationApiModel  from "@root/services-rest-api/models/movie-models/authorization-api-model";
 
 export class AuthorizationApiRequests {
     private baseUrl: string;
@@ -23,6 +23,9 @@ export class AuthorizationApiRequests {
                 'accept': 'application/json'
             }
         });
+
+        // Assert the response status code is 200
+        expect(response.status()).toBe(200);
 
         // Assuming the API returns a JSON response, parse the response body
         const responseBody: AuthorizationApiModel = await response.json();

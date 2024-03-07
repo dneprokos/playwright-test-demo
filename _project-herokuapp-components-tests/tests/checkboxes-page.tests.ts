@@ -3,7 +3,6 @@ import PageDataConstants from "../pages/pages-constants";
 
 test.describe.parallel('Checkboxes page tests - Verify page logic', async () => {
     test.beforeEach(async ({ mainPage, baseURL }) => {
-        //mainPage.page.on('console', message => console.log(message.text()));
         await mainPage.navigateUrl(new PageDataConstants(baseURL as string).checkboxesPage.getUrlPath());
         await mainPage.waitForPageLoad();
     });

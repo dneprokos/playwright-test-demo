@@ -3,7 +3,8 @@
     "compierOptions": {
         "baseUrl": ".",
         "paths": {
-            "@framework/*": ["../framework/*"]
+            "@framework/*": ["../framework/*"],
+            "@fixtures/*": ["../fixtures/*"]
         }
     }
 }
