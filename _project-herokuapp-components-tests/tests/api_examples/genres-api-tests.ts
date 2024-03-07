@@ -1,5 +1,6 @@
 import { MoviesApiService } from '@root/services-rest-api/facade/movies-api-requests-facade';
 import { test, expect } from '../../fixture-extention';
+import GlobalHeroKuaConfig  from '@root/_project-herokuapp-components-tests/global--env-variables';
 
 let isServiceAvailable = true;
 
@@ -17,7 +18,7 @@ test.describe.parallel('MOVIES API - Genres', () => {
         // Arrange
         const authResponse = await new MoviesApiService()
             .authorizationRequests()
-            .generateAuthToken('test', 'testpassword')
+            .generateAuthToken(GlobalHeroKuaConfig.regularUsername, GlobalHeroKuaConfig.regularPassword)
             
         // Act
         const genreResponse = await new MoviesApiService()
