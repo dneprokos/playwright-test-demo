@@ -1,4 +1,4 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
+import { devices, type PlaywrightTestConfig } from '@playwright/test';
 import { getEnv, getEnvParseNumber } from '@framework/configuration/environment-helper';
 import { EnvironmentParameters } from '@framework/configuration/environment-constants';
 
@@ -20,11 +20,16 @@ const config: PlaywrightTestConfig = {
     },
     projects: [
         {
-            name: 'Chrome Browser',
-            use: {
-                browserName: 'chromium',
-                channel: 'chrome',
-            },
+            name: 'Chromium',
+            use: {...devices['Desktop Chrome'] }, // Chromium buiild 
+        },
+        {
+            name: 'Google Chrome - Local Desktop',
+            use: {  ...devices['Desktop Chrome'], channel: 'chrome' } // Local Chrome browser
+        },
+        {
+            name: 'Mobile Safari',
+            use: { ...devices['iPhone 12'] },
         }
     ]
 };

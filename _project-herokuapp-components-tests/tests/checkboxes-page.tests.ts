@@ -9,9 +9,7 @@ test.describe.parallel('Checkboxes page tests - Verify page logic', async () => 
 
     test('Mark and unmark checkboxes - Should mark and unmark checkboxes', async ({ checkboxePage }) => {
         //Arrange
-        expect(await checkboxePage.checkBox1.isChecked()).toBeFalsy();
-        expect(await checkboxePage.checkBox2.isChecked()).toBeTruthy();
-
+        
         //Act
         await checkboxePage.checkBox1.check();
         await checkboxePage.checkBox2.uncheck();

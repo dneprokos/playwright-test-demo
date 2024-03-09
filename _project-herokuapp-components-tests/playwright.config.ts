@@ -43,7 +43,9 @@ const config: PlaywrightTestConfig = {
         //Screenshot only on failure
         screenshot: 'only-on-failure',
         //Video recording
-        video: 'on-first-retry',  
+        video: 'on-first-retry',
+        
+  
     },
     //Project options
     projects: [
@@ -52,7 +54,18 @@ const config: PlaywrightTestConfig = {
             use: {
                 browserName: 'chromium',
                 channel: 'chrome',
-                actionTimeout: 20000
+                permissions: ['geolocation', 'notifications']
+            },
+        },
+        {
+            name: 'Local Chrome in New York tests',
+            use: {
+                browserName: 'chromium',
+                channel: 'chrome',
+                locale: 'en-US',
+                timezoneId: 'America/New_York',
+                geolocation: { longitude: -74.006, latitude: 40.7128 },
+                permissions: ['geolocation', 'notifications']
             },
         }
     ]

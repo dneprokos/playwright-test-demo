@@ -16,6 +16,7 @@ import WindowsPage from './pages/windows-page/windows-page';
 import HorizontalSliderPage from './pages/horizontal-slider-page/horizontal-slider-page';
 import DropDownPage from './pages/drop-down-page/drop-down-page';
 import CheckboxesPage from './pages/checkboxes-page/checkboxes-page';
+import GeolocationPage from './pages/geolocation-page/geolocation-page';
 
 
 type Pages = {
@@ -36,6 +37,7 @@ type Pages = {
     horizontalSliderPage: HorizontalSliderPage;
     dropDownPage: DropDownPage;
     checkboxePage: CheckboxesPage;
+    geolocationPage: GeolocationPage;
 }
 
 export const test = base.extend<Pages>({
@@ -89,6 +91,9 @@ export const test = base.extend<Pages>({
     },
     checkboxePage: async ({page}, use) => {
         await use(new CheckboxesPage(page));
+    },
+    geolocationPage: async ({page}, use) => {
+        await use(new GeolocationPage(page));
     }
 });
 

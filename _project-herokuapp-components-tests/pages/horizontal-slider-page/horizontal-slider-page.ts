@@ -1,5 +1,5 @@
+import { Page } from "playwright/test";
 import { BasePage } from "@framework/page-base/base-page";
-import { Page } from "@playwright/test";
 
 export default class HorizontalSliderPage extends BasePage {
     private readonly sliderSelector = 'input[type="range"]';

@@ -26,7 +26,9 @@ export class MoviesApiService {
                     'accept': 'application/json',
                 },
             });
-    
+
+            console.log(await response.json());
+
             // Optionally, check the response status code if necessary
             // For example, consider the service available if the status code is 200 or 404
             if (response.status() === 200 || response.status() === 404 ) {
