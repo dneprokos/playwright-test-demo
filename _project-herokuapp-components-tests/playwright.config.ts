@@ -53,7 +53,8 @@ const config: PlaywrightTestConfig = {
             name: 'Local Chrome tests',
             use: {
                 browserName: 'chromium',
-                channel: 'chrome'
+                channel: 'chrome',
+                permissions: ['geolocation', 'notifications']
             },
         },
         {
