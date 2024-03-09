@@ -43,7 +43,9 @@ const config: PlaywrightTestConfig = {
         //Screenshot only on failure
         screenshot: 'only-on-failure',
         //Video recording
-        video: 'on-first-retry',  
+        video: 'on-first-retry',
+        
+  
     },
     //Project options
     projects: [
@@ -51,8 +53,7 @@ const config: PlaywrightTestConfig = {
             name: 'Local Chrome tests',
             use: {
                 browserName: 'chromium',
-                channel: 'chrome',
-                actionTimeout: 20000
+                channel: 'chrome'
             },
         }
     ]

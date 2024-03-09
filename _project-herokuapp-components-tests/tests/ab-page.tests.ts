@@ -25,7 +25,7 @@ test.describe('A/B page tests - Verify page logic', async () => {
 
 
     test('Verify page content', async ({ abTestPage }) => {
-        //Arrange    
+        //Arrange
         const pageHeaders = ['A/B Test Variation 1', 'A/B Test Control']
         const pageText = 'Also known as split testing. This is a way in which businesses are able to simultaneously test and learn different versions of a page to see which text and/or functionality works best towards a desired outcome (e.g. a user action such as a click-through).';
 
