@@ -55,6 +55,17 @@ const config: PlaywrightTestConfig = {
                 browserName: 'chromium',
                 channel: 'chrome'
             },
+        },
+        {
+            name: 'Local Chrome in New York tests',
+            use: {
+                browserName: 'chromium',
+                channel: 'chrome',
+                locale: 'en-US',
+                timezoneId: 'America/New_York',
+                geolocation: { longitude: -74.006, latitude: 40.7128 },
+                permissions: ['geolocation', 'notifications']
+            },
         }
     ]
 };
