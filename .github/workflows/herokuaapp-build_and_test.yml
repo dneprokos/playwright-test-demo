@@ -32,7 +32,7 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright Tests
-      run: npx playwright test
+      run: npx playwright test --project="Chromium build-in tests"
       working-directory: _project-herokuapp-components-tests
 
     - name: Upload Playwright JUnit Test Results

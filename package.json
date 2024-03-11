@@ -36,7 +36,7 @@
     "@types/mssql": "^8.1.2",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "allure-playwright": "^2.0.0-beta.15",
+    "allure-playwright": "^2.14.1",
     "dotenv": "^16.0.0",
     "eslint": "^8.12.0",
     "faker": "^5.5.3",
