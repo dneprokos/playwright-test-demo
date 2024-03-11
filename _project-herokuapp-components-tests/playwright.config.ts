@@ -67,7 +67,14 @@ const config: PlaywrightTestConfig = {
                 geolocation: { longitude: -74.006, latitude: 40.7128 },
                 permissions: ['geolocation', 'notifications']
             },
-        }
+        },
+        {
+            name: 'Chromium build-in tests',
+            use: {
+                browserName: 'chromium',
+                permissions: ['geolocation', 'notifications']
+            },
+        },
     ]
 };
 
