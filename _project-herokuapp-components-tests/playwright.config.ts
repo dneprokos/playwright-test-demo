@@ -1,18 +1,15 @@
-import { devices, type PlaywrightTestConfig } from '@playwright/test';
-import { getEnv, getEnvParseNumber } from '@framework/configuration/environment-helper';
-import { EnvironmentParameters } from '@framework/configuration/environment-constants';
-
-const Headless = getEnv(EnvironmentParameters.headelessBrowser) === 'true';
+import { type PlaywrightTestConfig } from '@playwright/test';
+import { Config } from './config';
 
 const config: PlaywrightTestConfig = {
     //Will be a filter for tests
-    testMatch: ['tests/*tests.ts', 'tests/**/*tests.ts'],
+    testMatch: ['tests/**/*.ts'],
     //Maximum time for a test to run
-    timeout: getEnvParseNumber(EnvironmentParameters.maxTestRunTime),
+    timeout: Config.MAX_TEST_RUNTIME, 
     //Maximum retries for a failed test
-    retries: getEnvParseNumber(EnvironmentParameters.retryFailed)?? 1,
+    retries: Config.RETRY_FAILED, 
     //Maximum number of workers. Parallel execution
-    workers: getEnvParseNumber(EnvironmentParameters.workers)?? 10,
+    workers: Config.WORKERS?? 10,
     //Reporters for the test results
     reporter: [
         ['junit', { outputFile: 'test-results/results.xml' }],
@@ -22,20 +19,22 @@ const config: PlaywrightTestConfig = {
             suiteTitle: false,
             environmentInfo: {
                 FRAMEWORK: 'Playwright',
-                HEADLESS: Headless,
+                HEADLESS: Config.HEADLESS_BROWSER,
                 E2E_NODE_VERSION: process.version,
-                E2E_OS: process.platform },
+                E2E_OS: process.platform
+            },
         }],
         ['list']
     ],
     globalSetup: require.resolve('./global-setup'),
+    globalTimeout: 300000,
     // globalTeardown: require.resolve('./global-teardown'),
     //Global options for all tests
     use: {
         //Base URL for the tests
-        baseURL: getEnv(EnvironmentParameters.baseUrl),
+        baseURL: Config.BASE_URL,
         //Headless browser
-        headless: Headless,
+        headless: Config.HEADLESS_BROWSER,
         //Browser viewport
         viewport: { width: 2045, height: 960 },
         //Color scheme for the browser
@@ -44,8 +43,19 @@ const config: PlaywrightTestConfig = {
         screenshot: 'only-on-failure',
         //Video recording
         video: 'on-first-retry',
-        
-  
+        launchOptions: {
+            slowMo: 100,
+            logger: {
+                isEnabled: (name, severity) => name === 'browser',
+                log: (name, severity, message, args) => {
+                    const severityThreshold = 'info'; // Example threshold
+                    const severityLevels = ['verbose', 'info', 'warning', 'error'];
+                    if (severityLevels.indexOf(severity) >= severityLevels.indexOf(severityThreshold)) {
+                        console.log(`[${name}] ${message}`);
+                    }
+                },
+            },
+        }
     },
     //Project options
     projects: [
@@ -54,7 +64,7 @@ const config: PlaywrightTestConfig = {
             use: {
                 browserName: 'chromium',
                 channel: 'chrome',
-                permissions: ['geolocation', 'notifications']
+                permissions: ['geolocation', 'notifications' ]
             },
         },
         {
@@ -65,7 +75,7 @@ const config: PlaywrightTestConfig = {
                 locale: 'en-US',
                 timezoneId: 'America/New_York',
                 geolocation: { longitude: -74.006, latitude: 40.7128 },
-                permissions: ['geolocation', 'notifications']
+                permissions: ['geolocation', 'notifications'],
             },
         },
         {
@@ -74,8 +84,9 @@ const config: PlaywrightTestConfig = {
                 browserName: 'chromium',
                 permissions: ['geolocation', 'notifications']
             },
-        },
+         },
     ]
 };
+
 
 export default config;

@@ -4,8 +4,7 @@ export class BasePage {
     page: Page
 
     constructor(page: Page) {
-        this.page = page;
-        
+        this.page = page;       
     }
 
     public async navigateUrl(url: string): Promise<void> {

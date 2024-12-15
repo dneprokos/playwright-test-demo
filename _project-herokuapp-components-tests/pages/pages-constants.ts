@@ -25,7 +25,7 @@ export default class PageDataConstants {
         this.fileUploadPage = new PageData(this.baseUrl + '/upload', 'File Upload');
         this.floatingMenuPage = new PageData(this.baseUrl + '/floating_menu', 'Floating Menu');
         this.forgotPasswordPage = new PageData(this.baseUrl + '/forgot_password', 'Forgot Password');
-        this.formAuthenticationPage = new PageData(this.baseUrl + '/login', 'Form Authentication');
+        this.loginPage = new PageData(this.baseUrl + '/login', 'Login Page');
         this.framesPage = new PageData(this.baseUrl + '/frames', 'Frames');
         this.geolocationPage = new PageData(this.baseUrl + '/geolocation', 'Geolocation');
         this.horizontalSliderPage = new PageData(this.baseUrl + '/horizontal_slider', 'Horizontal Slider');
@@ -72,7 +72,7 @@ export default class PageDataConstants {
     readonly fileUploadPage: PageData;
     readonly floatingMenuPage: PageData;
     readonly forgotPasswordPage: PageData;
-    readonly formAuthenticationPage: PageData;
+    readonly loginPage: PageData;
     readonly framesPage: PageData;
     readonly geolocationPage: PageData;
     readonly horizontalSliderPage: PageData;

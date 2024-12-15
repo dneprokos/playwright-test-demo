@@ -10,7 +10,7 @@ import FramesPage from './pages/frames-page/frames-page';
 import UploadFilePage from './pages/upload-file-page/upload-file-page';
 import DownloadFilePage from './pages/download-file-page/download-file-page';
 import ShadowDomPage from './pages/shadow-dom-page/shadow-dom-page';
-import FormAuthenticationPage from './pages/form-authentication-page/form-authentication-page';
+import LoginPage from './pages/login-page/login-page';
 import KeyPressesPage from './pages/key-presses-page/key-presses-page';
 import WindowsPage from './pages/windows-page/windows-page';
 import HorizontalSliderPage from './pages/horizontal-slider-page/horizontal-slider-page';
@@ -31,7 +31,7 @@ type Pages = {
     uploadFilePage: UploadFilePage;
     downloadFilePage: DownloadFilePage;
     shadowDomPage: ShadowDomPage;
-    formAuthenticationPage: FormAuthenticationPage;
+    loginPage: LoginPage;
     keyPressesPage: KeyPressesPage;
     windowPage: WindowsPage;
     horizontalSliderPage: HorizontalSliderPage;
@@ -74,8 +74,8 @@ export const test = base.extend<Pages>({
     shadowDomPage: async ({page}, use) => {
         await use(new ShadowDomPage(page));
     },
-    formAuthenticationPage: async ({page}, use) => {
-        await use(new FormAuthenticationPage(page));
+    loginPage: async ({page}, use) => {
+        await use(new LoginPage(page));
     },
     keyPressesPage: async ({page}, use) => {
         await use(new KeyPressesPage(page));

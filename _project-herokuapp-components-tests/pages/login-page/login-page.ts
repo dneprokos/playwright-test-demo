@@ -1,9 +1,19 @@
 import { BasePage } from "@framework/page-base/base-page";
-import { Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 
-export default class FormAuthenticationPage extends BasePage {
+export default class LoginPage extends BasePage {
+    userNameLocator: Locator;
+    passwordLocator: Locator;
+    loginFormLocator: Locator;
+    loginTextContentLocator: Locator;
+
     constructor(page: Page) {
         super(page);
+
+        this.userNameLocator = this.page.locator('#username');
+        this.passwordLocator = this.page.locator('#password');
+        this.loginFormLocator = this.page.locator('#login');
+        this.loginTextContentLocator = this.page.locator('h4.subheader');
     }
 
     async getUsernameAndPassword(): Promise<[string, string]> {
@@ -13,9 +23,13 @@ export default class FormAuthenticationPage extends BasePage {
         return [username, password];
     }
 
-    async performAuthentication(username: string, password: string): Promise<void> {
-        await this.page.fill('#username', username);
-        await this.page.fill('#password', password);
+    async fillUsernameAndPassword(username: string, password: string): Promise<void> {
+        await this.userNameLocator.fill(username);
+        await this.passwordLocator.fill(password);
+    }
+
+    async performLoginActions(username: string, password: string): Promise<void> {
+        await this.fillUsernameAndPassword(username, password);  
         await this.page.click('button[type="submit"]');
     }
 
