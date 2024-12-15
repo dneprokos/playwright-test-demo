@@ -5,10 +5,22 @@ import { allure } from "allure-playwright";
 test.describe('A/B page tests - Verify page logic', async () => {
     test.describe.configure({ mode: 'serial' });
 
+    test.beforeAll(async () => {
+        console.log('Runs once before all A/B page tests');
+    });
+
     test.beforeEach(async ({ mainPage, baseURL }) => {
         await allure.suite('A/B page tests - using allure.suite attribute'); // If not sepcified, will use the suite name from the describe block
         await mainPage.navigateUrl(new PageDataConstants(baseURL as string).abTestingPage.getUrlPath());
         await mainPage.waitForPageLoad();
+    });
+
+    test.afterAll(async () => {
+        console.log('Runs once after all A/B page tests');
+    });
+
+    test.afterEach(async () => {
+        console.log('Runs after each A/B page test');
     });
 
     test('always fail test', async ({ page } ) => {

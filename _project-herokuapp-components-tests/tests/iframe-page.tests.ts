@@ -9,7 +9,7 @@ test.describe.parallel('Frames page tests - Verify page logic', async () => {
         await mainPage.waitForPageLoad();
     });
 
-    test('Nested Frames sub-page - Get text from different IFrames', async ({ framesPage, page }) => {
+    test('Nested Frames sub-page - Get text from different IFrames', async ({ framesPage }) => {
         //Arrange
         const nestedFramesPage: NestedFramesPage = await framesPage.navigateToNestedFramesPage();
 
@@ -27,7 +27,7 @@ test.describe.parallel('Frames page tests - Verify page logic', async () => {
     });
 
     // This test is failing because of cannot reach to contenteditable element
-    test.skip('IFrame sub-page - Enter and read text', async ({ framesPage, page }) => {
+    test.skip('IFrame sub-page - Enter and read text', async ({ framesPage }) => {
         //Arrange
         const nestedFramesPage: IFramePage = await framesPage.navigateToIFramePage();
         const expectedText = 'Hello World!';

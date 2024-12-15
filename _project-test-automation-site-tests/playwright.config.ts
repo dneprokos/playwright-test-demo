@@ -17,7 +17,7 @@ const config: PlaywrightTestConfig = {
         headless: getEnv(EnvironmentParameters.headelessBrowser) === 'true',
         viewport: { width: 2045, height: 960 },
         colorScheme: 'dark',
-        screenshot: 'only-on-failure',
+        screenshot: 'only-on-failure'
     },
     projects: [
         {
@@ -25,7 +25,7 @@ const config: PlaywrightTestConfig = {
             use: {
                 browserName: 'chromium',
                 channel: 'chrome',
-                actionTimeout: 20000,
+                actionTimeout: 20000
             },
         },
         {

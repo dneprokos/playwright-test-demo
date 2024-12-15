@@ -1,4 +1,4 @@
-import { test, expect } from "../fixture-extention";
+import { test } from "../fixture-extention";
 import PageDataConstants from "../pages/pages-constants";
 
 test.describe.parallel('Entry add page tests - Verify page logic', async () => {
