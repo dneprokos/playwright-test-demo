@@ -2,9 +2,9 @@ name: Build and test Herokuapp
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - '_project-herokuapp-components-tests/**'
+      - "_project-herokuapp-components-tests/**"
 
 jobs:
   build_and_test:
@@ -15,36 +15,36 @@ jobs:
         node-version: [20.x]
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Install Root Dependencies
-      run: npm install
+      - name: Install Root Dependencies
+        run: npm install
 
-    - name: Run Build
-      run: npm run build
+      - name: Run Build
+        run: npm run build
 
-    - name: Install Dependencies for Playwright Tests
-      run: npx playwright install --with-deps
+      - name: Install Dependencies for Playwright Tests
+        run: npx playwright install --with-deps
 
-    - name: Run Playwright Tests
-      run: npx playwright test --project="Chromium build-in tests"
-      working-directory: _project-herokuapp-components-tests
+      - name: Run Playwright Tests
+        run: npx playwright test --project="Chromium build-in tests"
+        working-directory: _project-herokuapp-components-tests
 
-    - name: Upload Playwright JUnit Test Results
-      uses: actions/upload-artifact@v2
-      if: always() # ensures that reports are uploaded even if tests fail
-      with:
-        name: playwright-junit-test-results
-        path: _project-herokuapp-components-tests/test-results/results.xml
-    
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always() # ensures that the report is published even if tests fail
-      with:
-        files: _project-herokuapp-components-tests/test-results/results.xml
-        check_name: Test Results # Optional, name of the check
+      - name: Upload Playwright JUnit Test Results
+        uses: actions/upload-artifact@v3
+        if: always() # ensures that reports are uploaded even if tests fail
+        with:
+          name: playwright-junit-test-results
+          path: _project-herokuapp-components-tests/test-results/results.xml
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always() # ensures that the report is published even if tests fail
+        with:
+          files: _project-herokuapp-components-tests/test-results/results.xml
+          check_name: Test Results # Optional, name of the check
