@@ -31,7 +31,7 @@
   "homepage": "https://github.com/dneprokos/playwright-test-demo#readme",
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.50.1",
     "@types/faker": "^6.6.9",
     "@types/mssql": "^8.1.2",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
@@ -39,11 +39,13 @@
     "allure-playwright": "^2.14.1",
     "dotenv": "^16.0.0",
     "eslint": "^8.12.0",
+    "eslint-plugin-playwright": "^2.2.0",
     "faker": "^5.5.3",
     "mssql": "^11.0.1",
     "typescript": "^5.0.2"
   },
   "dependencies": {
+    "agentql": "^1.8.0",
     "joi": "^17.13.3"
   }
 }
