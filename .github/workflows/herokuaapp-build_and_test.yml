@@ -36,7 +36,7 @@ jobs:
         working-directory: _project-herokuapp-components-tests
 
       - name: Upload Playwright JUnit Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always() # ensures that reports are uploaded even if tests fail
         with:
           name: playwright-junit-test-results
