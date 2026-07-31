@@ -46,8 +46,8 @@ const config: PlaywrightTestConfig = {
         launchOptions: {
             slowMo: 100,
             logger: {
-                isEnabled: (name, severity) => name === 'browser',
-                log: (name, severity, message, args) => {
+                isEnabled: (name) => name === 'browser',
+                log: (name, severity, message) => {
                     const severityThreshold = 'info'; // Example threshold
                     const severityLevels = ['verbose', 'info', 'warning', 'error'];
                     if (severityLevels.indexOf(severity) >= severityLevels.indexOf(severityThreshold)) {

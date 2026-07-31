@@ -16,7 +16,7 @@ export class SqlBaseRequest {
         }
         catch(err: unknown) {
             console.log(err);
-            throw new Error("SQL query exception")
+            throw new Error("SQL query exception", { cause: err })
         }
         finally {
             void pool.close();

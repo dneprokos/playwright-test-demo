@@ -36,7 +36,7 @@ export class MoviesApiService {
             }
             // You can add more conditions based on status codes if needed
             return false; // Or handle differently based on the response
-        } catch (error) {
+        } catch {
             // If an error occurs (e.g., network error, connection refused, etc.), catch it and return false
             return false;
         }
