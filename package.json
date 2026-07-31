@@ -45,7 +45,7 @@
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "agentql": "^1.8.0",
+    "agentql": "^1.18.1",
     "joi": "^17.13.3"
   }
 }
