@@ -33,7 +33,7 @@
     "@faker-js/faker": "^8.4.1",
     "@playwright/test": "^1.62.1",
     "@types/faker": "^6.6.9",
-    "@types/mssql": "^8.1.2",
+    "@types/mssql": "^12.3.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "allure-playwright": "^2.14.1",
@@ -41,8 +41,8 @@
     "eslint": "^8.12.0",
     "eslint-plugin-playwright": "^2.2.0",
     "faker": "^5.5.3",
-    "mssql": "^11.0.1",
-    "typescript": "^5.0.2"
+    "mssql": "^12.7.0",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "agentql": "^1.18.1",
