@@ -1,6 +1,6 @@
 import { test } from "../fixture-extention";
 import PageDataConstants from "../pages/pages-constants";
-const { wrap, configure } = require("agentql");
+const { wrap } = require("agentql");
 const { chromium } = require("playwright");
 
 test.describe

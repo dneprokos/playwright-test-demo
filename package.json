@@ -7,7 +7,7 @@
     "hero:test": "npx playwright test --config=_project-herokuapp-components-tests/playwright.config.ts",
     "hero:test:ui": "npx playwright test --ui --config=_project-herokuapp-components-tests/playwright.config.ts",
     "build": "tsc -b",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint .",
     "update": "npm install @playwright/test@latest",
     "download:chromium": "npx playwright install chromium",
     "download:firefox": "npx playwright install firefox",
@@ -30,22 +30,21 @@
   },
   "homepage": "https://github.com/dneprokos/playwright-test-demo#readme",
   "devDependencies": {
-    "@faker-js/faker": "^8.4.1",
-    "@playwright/test": "^1.50.1",
-    "@types/faker": "^6.6.9",
-    "@types/mssql": "^8.1.2",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "allure-playwright": "^2.14.1",
-    "dotenv": "^16.0.0",
-    "eslint": "^8.12.0",
-    "eslint-plugin-playwright": "^2.2.0",
-    "faker": "^5.5.3",
-    "mssql": "^11.0.1",
-    "typescript": "^5.0.2"
+    "@eslint/js": "^10.0.1",
+    "@faker-js/faker": "^10.5.0",
+    "@playwright/test": "^1.62.1",
+    "@types/mssql": "^12.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
+    "allure-playwright": "^2.15.1",
+    "dotenv": "^17.4.2",
+    "eslint": "^10.8.0",
+    "eslint-plugin-playwright": "^2.11.0",
+    "mssql": "^12.7.0",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "agentql": "^1.8.0",
+    "agentql": "^1.18.1",
     "joi": "^17.13.3"
   }
 }
