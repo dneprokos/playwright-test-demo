@@ -9,8 +9,8 @@ test.describe.parallel('API example tests', async () => {
             const allBookings = await restApiRequests
                 .bookingRequests(request)
                 .getBookingIds();
-            const lastBookingId = allBookings[allBookings.length - 1].bookingid;    
-
+            const lastBookingId = allBookings[allBookings.length - 1].bookingid;
+            
             //Act
             const booking: BookingModel = await restApiRequests
                 .bookingRequests(request)

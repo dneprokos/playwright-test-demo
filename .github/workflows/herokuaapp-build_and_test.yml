@@ -2,7 +2,7 @@ name: Build and test Herokuapp
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - "_project-herokuapp-components-tests/**"
 
