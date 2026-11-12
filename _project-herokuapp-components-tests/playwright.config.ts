@@ -2,6 +2,11 @@ import { type PlaywrightTestConfig } from "@playwright/test";
 import { Config } from "./config";
 import type { MoviesBackend } from "@api/clients/movies-api/movies-api-factory";
 
+const EXTERNAL_SITES_TESTS = [
+  /get-countries-api\.tests\.ts$/,
+  /ninja-pizza-intercept\.tests\.ts$/,
+];
+
 const config: PlaywrightTestConfig<object, { moviesBackend: MoviesBackend }> = {
   //Will be a filter for tests
   testMatch: ["tests/**/*.ts"],
@@ -87,9 +92,19 @@ const config: PlaywrightTestConfig<object, { moviesBackend: MoviesBackend }> = {
     },
     {
       name: "Chromium build-in tests",
+      testIgnore: EXTERNAL_SITES_TESTS,
       use: {
         browserName: "chromium",
         permissions: ["geolocation", "notifications"],
+      },
+    },
+    {
+      // Tests against third-party sites/APIs we don't control (restcountries, ninjapizza).
+      // Kept out of CI because they break whenever those services change.
+      name: "External sites tests",
+      testMatch: EXTERNAL_SITES_TESTS,
+      use: {
+        browserName: "chromium",
       },
     },
     {
