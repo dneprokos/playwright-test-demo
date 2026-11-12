@@ -1,7 +1,6 @@
-import { EnvironmentParameters } from '@framework/configuration/environment-constants';
-import { getEnv } from '@framework/configuration/environment-helper';
 import { test as base } from '@playwright/test';
 import { RestApiRequestsFacade } from '@root/services-rest-api/facade/rest-api-requests-facade';
+import { Config } from './config';
 
 type EnvironmentVariables = {
     restApiBaseUrl: string
@@ -13,7 +12,7 @@ type Services = {
 
 export const test = base.extend<EnvironmentVariables & Services>({
     //Services
-    restApiRequests: new RestApiRequestsFacade(getEnv(EnvironmentParameters.restBookingBaseUrl))
+    restApiRequests: new RestApiRequestsFacade(Config.REST_BOOKING_BASE_URL)
 })
 
 export default test;

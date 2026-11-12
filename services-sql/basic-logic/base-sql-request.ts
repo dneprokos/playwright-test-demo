@@ -1,4 +1,5 @@
 import * as sql from "mssql";
+import { SqlConnectionPool } from "./sql-connection-pool";
 
 export class SqlBaseRequest {
     config: string | sql.config;
@@ -7,19 +8,15 @@ export class SqlBaseRequest {
         this.config = sqlConfig;
     }
 
+    /** Runs the query on the shared per-worker pool (the pool stays open; it is closed at worker teardown). */
     async sendRequest(query: string): Promise<sql.IResult<unknown>> {
-        const pool = await sql.connect(this.config);
-
         try {
-            const result= await pool.query(query);
-            return result;
+            const pool = await SqlConnectionPool.get(this.config);
+            return await pool.request().query(query);
         }
-        catch(err: unknown) {
+        catch (err: unknown) {
             console.log(err);
-            throw new Error("SQL query exception", { cause: err })
-        }
-        finally {
-            void pool.close();
+            throw new Error("SQL query exception", { cause: err });
         }
     }
 }

@@ -1,7 +1,6 @@
-import { EnvironmentParameters } from "@framework/configuration/environment-constants";
-import { getEnv } from "@framework/configuration/environment-helper";
 import { BaseFragment } from "@framework/page-base/base-fragment";
 import { Page } from "@playwright/test";
+import { Config } from "@test_automation-project/config";
 
 export class LoginFormFragment extends BaseFragment {
     /**
@@ -18,8 +17,8 @@ export class LoginFormFragment extends BaseFragment {
     }
 
     async loginToMainPageWithCorrectCredentials() {
-        const user = getEnv(EnvironmentParameters.user);
-        const password = getEnv(EnvironmentParameters.password);
+        const user = Config.APP_USER;
+        const password = Config.PASSWORD;
         await this.fillCredentialsAndClickLoginButton(user, password);
         await this.page
             .waitForLoadState('domcontentloaded')

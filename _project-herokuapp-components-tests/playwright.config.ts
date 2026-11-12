@@ -1,7 +1,8 @@
 import { type PlaywrightTestConfig } from "@playwright/test";
 import { Config } from "./config";
+import type { MoviesBackend } from "@api/clients/movies-api/movies-api-factory";
 
-const config: PlaywrightTestConfig = {
+const config: PlaywrightTestConfig<object, { moviesBackend: MoviesBackend }> = {
   //Will be a filter for tests
   testMatch: ["tests/**/*.ts"],
   //Maximum time for a test to run
@@ -89,6 +90,15 @@ const config: PlaywrightTestConfig = {
       use: {
         browserName: "chromium",
         permissions: ["geolocation", "notifications"],
+      },
+    },
+    {
+      // Movies API framework check: same tests, but the Abstract Factory binds all role
+      // clients to an in-process stub, so they run in CI without the real service.
+      name: "Movies API - stub backend",
+      testMatch: /genres-api-tests\.ts$/,
+      use: {
+        moviesBackend: "stub",
       },
     },
   ],

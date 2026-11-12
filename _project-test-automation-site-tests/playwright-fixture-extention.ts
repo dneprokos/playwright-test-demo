@@ -1,5 +1,3 @@
-import { EnvironmentParameters } from '@framework/configuration/environment-constants';
-import { getEnv } from '@framework/configuration/environment-helper';
 import { test as base } from '@playwright/test';
 import CheckBoxesPage from './pages/check-box-page/check-boxes-page';
 import DatePickerPage from './pages/date-picker-page/date-picker-page';
@@ -11,6 +9,7 @@ import { LoginPage } from './pages/login-page/login-page';
 import RadioButtonPage from './pages/radio-button-page/radio-button-page';
 import TablePage from './pages/table-page/table-page';
 import TogglePage from './pages/toggle-page/toggle-page';
+import { Config } from './config';
 
 type Pages = {
     LoginPage: LoginPage;
@@ -32,7 +31,7 @@ type EnvironmentVariables = {
 
 export const test = base.extend<Pages & EnvironmentVariables>({
     //Environment variables
-    baseURL: getEnv(EnvironmentParameters.baseUrl) as string,
+    baseURL: Config.BASE_URL,
 
     //Pages. Pages intialization for quick access
     LoginPage: async ({page}, use) => {
