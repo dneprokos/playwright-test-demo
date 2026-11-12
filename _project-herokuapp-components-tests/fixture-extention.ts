@@ -17,6 +17,37 @@ import HorizontalSliderPage from "./pages/horizontal-slider-page/horizontal-slid
 import DropDownPage from "./pages/drop-down-page/drop-down-page";
 import CheckboxesPage from "./pages/checkboxes-page/checkboxes-page";
 import GeolocationPage from "./pages/geolocation-page/geolocation-page";
+import { MoviesApiClient } from "@api/clients/movies-api/movies-api-client";
+import {
+  createMoviesApiFactory,
+  MoviesApiFactory,
+  MoviesBackend,
+} from "@api/clients/movies-api/movies-api-factory";
+
+type ApiClients = {
+  anonymousMoviesApi: MoviesApiClient;
+  regularUserMoviesApi: MoviesApiClient;
+  adminMoviesApi: MoviesApiClient;
+};
+
+type ApiWorkerFixtures = {
+  /** Project option: which backend the Movies API clients talk to. */
+  moviesBackend: MoviesBackend;
+  /** Abstract Factory for the role clients — one per worker, chosen by `moviesBackend`. */
+  moviesApiFactory: MoviesApiFactory;
+};
+
+/** Asks the worker's factory for one role client and releases its request context after the test. */
+const moviesApiClient =
+  (create: (factory: MoviesApiFactory) => MoviesApiClient) =>
+  async (
+    { moviesApiFactory }: { moviesApiFactory: MoviesApiFactory },
+    use: (client: MoviesApiClient) => Promise<void>,
+  ) => {
+    const client = create(moviesApiFactory);
+    await use(client);
+    await client.dispose();
+  };
 
 type Pages = {
   mainPage: MainPage;
@@ -39,7 +70,20 @@ type Pages = {
   geolocationPage: GeolocationPage;
 };
 
-export const test = base.extend<Pages>({
+export const test = base.extend<Pages & ApiClients, ApiWorkerFixtures>({
+  moviesBackend: ["real", { option: true, scope: "worker" }],
+  moviesApiFactory: [
+    async ({ moviesBackend }, use) => {
+      const factory = await createMoviesApiFactory(moviesBackend);
+      await use(factory);
+      await factory.dispose();
+    },
+    { scope: "worker" },
+  ],
+  anonymousMoviesApi: moviesApiClient((f) => f.createAnonymousClient()),
+  regularUserMoviesApi: moviesApiClient((f) => f.createRegularUserClient()),
+  adminMoviesApi: moviesApiClient((f) => f.createAdminClient()),
+
   mainPage: async ({ page }, use) => {
     await use(new MainPage(page));
   },

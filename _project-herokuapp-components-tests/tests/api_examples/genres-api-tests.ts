@@ -1,32 +1,34 @@
-import { MoviesApiService } from '@root/services-rest-api/facade/movies-api-requests-facade';
 import { test, expect } from '../../fixture-extention';
-import GlobalHeroKuaConfig  from '@root/_project-herokuapp-components-tests/global--env-variables';
-
-let isServiceAvailable = true;
 
 test.describe.parallel('MOVIES API - Genres', () => {
-    test.beforeAll(async () => {
-        isServiceAvailable = await new MoviesApiService().isServiceAvailable();
+    test.beforeEach(async ({ moviesApiFactory }) => {
+        test.info().annotations.push({ type: 'movies backend', description: moviesApiFactory.backend });
+        test.skip(!(await moviesApiFactory.isAvailable()), 'Service is not available. Please download from https://github.com/dneprokos/node-rest-services and start the service');
     });
 
-    test.beforeEach(async () => {
-        test.skip(!isServiceAvailable, 'Service is not available. Please download from https://github.com/dneprokos/node-rest-services and start the service');
-    });
-
-
-    test('GET /genre/:id - id exist - Should be OK and returned', async ( ) => {
-        // Arrange
-        const authResponse = await new MoviesApiService()
-            .authorizationRequests()
-            .generateAuthToken(GlobalHeroKuaConfig.regularUsername, GlobalHeroKuaConfig.regularPassword)
-            
+    test('GET /genres/:id - regular user, id exists - Should be OK and returned', async ({ regularUserMoviesApi }) => {
         // Act
-        const genreResponse = await new MoviesApiService()
-            .genresRequests()
-            .getGenreById(1, authResponse.accessToken);
-        
+        const genre = await (await regularUserMoviesApi.genres()).getGenreById(1);
+
         // Assert
-        expect(genreResponse.id).toBe(1);
-        expect(genreResponse.name).toBe('Action');
+        expect(genre.id).toBe(1);
+        expect(genre.name).toBe('Action');
+    });
+
+    test('GET /genres/:id - admin user, id exists - Should be OK and returned', async ({ adminMoviesApi }) => {
+        // Act
+        const genre = await (await adminMoviesApi.genres()).getGenreById(1);
+
+        // Assert
+        expect(genre.id).toBe(1);
+        expect(genre.name).toBe('Action');
+    });
+
+    test('GET /genres/:id - anonymous user - Should be Unauthorized', async ({ anonymousMoviesApi }) => {
+        // Act
+        const response = await (await anonymousMoviesApi.genres()).getGenreByIdResponse(1);
+
+        // Assert
+        expect(response.status()).toBe(401);
     });
 });

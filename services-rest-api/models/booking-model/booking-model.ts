@@ -6,4 +6,5 @@ export interface BookingModel {
     totalprice: number;
     depositpaid: boolean;
     bookingdates: BookingDatesModel;
+    additionalneeds?: string;
 }
