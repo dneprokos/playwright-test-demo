@@ -1,18 +1,17 @@
 import { PlaywrightTestConfig } from '@playwright/test';
-import { EnvironmentParameters } from '@framework/configuration/environment-constants';
-import { getEnv, getEnvParseNumber } from '@framework/configuration/environment-helper';
+import { Config } from './config';
 
 const config: PlaywrightTestConfig = {
-    timeout: getEnvParseNumber(EnvironmentParameters.maxTestRunTime),
+    timeout: Config.MAX_TEST_RUNTIME,
     testMatch: 'tests/*tests.ts',
-    retries: getEnvParseNumber(EnvironmentParameters.retryFailed)?? 1,
-    workers: getEnvParseNumber(EnvironmentParameters.workers)?? 4,
+    retries: Config.RETRY_FAILED,
+    workers: Config.WORKERS,
     reporter: [
         ['allure-playwright'],
         ['list']
     ],
     use: {
-        headless: getEnv(EnvironmentParameters.headelessBrowser) === 'true',
+        headless: Config.HEADLESS_BROWSER,
         viewport: { width: 2045, height: 960 },
         colorScheme: 'dark',
         screenshot: 'only-on-failure',

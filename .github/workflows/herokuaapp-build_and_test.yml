@@ -2,7 +2,7 @@ name: Build and test Herokuapp
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, develop]
     paths:
       - "_project-herokuapp-components-tests/**"
 
@@ -15,10 +15,10 @@ jobs:
         node-version: [20.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -32,7 +32,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright Tests
-        run: npx playwright test --project="Chromium build-in tests"
+        run: npx playwright test --project="Chromium build-in tests" --project="Movies API - stub backend"
         working-directory: _project-herokuapp-components-tests
 
       - name: Upload Playwright JUnit Test Results

@@ -26,6 +26,8 @@ test.describe.parallel('Main page tests - Verify page logic', async () => {
         //Assert
         expect.soft(await mainPage.getTopPageHeader()).toBe('Welcome to the-internet');
         expect.soft(await mainPage.getAvailableExamplesHeader()).toBe('Available Examples');
-        expect.soft(actualPagesData).toEqual(pageDataArray);
+        // The site keeps adding examples, so check that every known page is listed
+        // rather than requiring an exact match of the whole list.
+        expect.soft(actualPagesData).toEqual(expect.arrayContaining(pageDataArray));
     });
 });

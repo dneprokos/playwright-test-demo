@@ -5,7 +5,7 @@ export class EnvironmentParameters {
     static baseUrl = 'BASE_URL';
     static maxTestRunTime = 'MAX_TEST_RUNTIME';
     static restBookingBaseUrl = 'REST_BOOKING_BASE_URL';
-    static user = 'USER';
+    static user = 'APP_USER';
     static password = 'PASSWORD';
     static viewPort = 'VIEWPORT';
     static moviesApiBaseUrl = 'MOVIES_API_BASE_URL';
