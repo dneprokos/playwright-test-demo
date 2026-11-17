@@ -5,17 +5,14 @@ import { TableDataFragment } from "./fragments-and-models/table-data-fragment";
 import { TablePagingFragment } from "./fragments-and-models/table-paging-fragments";
 
 export default class TablePage extends PageWithHeaderAndFooter {
-    /**
-     *
-     */
+    readonly tableData: TableDataFragment;
+    readonly tableFilter: FilterTableDataFragment;
+    readonly tablePaging: TablePagingFragment;
+
     constructor(page: Page) {
         super(page);
-        this.tableData = new TableDataFragment(page);
-        this.tableFilter = new FilterTableDataFragment(page);
-        this.tablePaging = new TablePagingFragment(page);
+        this.tableData = this.add(new TableDataFragment(page));
+        this.tableFilter = this.add(new FilterTableDataFragment(page));
+        this.tablePaging = this.add(new TablePagingFragment(page));
     }
-
-    tableData: TableDataFragment;
-    tableFilter: FilterTableDataFragment;
-    tablePaging: TablePagingFragment;
 }

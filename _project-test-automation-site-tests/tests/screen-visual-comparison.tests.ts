@@ -1,13 +1,12 @@
 import test from '@test_automation-project/playwright-fixture-extention';
 import { generateRandomString } from '@framework/helpers/data-generatos/string-generator';
 import { expect } from '@playwright/test';
-import AuthenticationSteps from '@test_automation-project/utils/common-steps/basic-steps';
 import { HeaderMenuNames } from '../pages/_common-pages/fragments/header-menu-names-enum';
 import { InputPageInputFields } from '../pages/input-fields-page/fragments-and-models/input-page-input-fields';
 
 test.describe.parallel('Visual comparison tests', async () => {
-    test.beforeEach(async ({ page, baseURL, HomePage}) => {
-        await new AuthenticationSteps(page).openBasePageAndLoginWithSessionStorage(baseURL as string);
+    test.beforeEach(async ({ page, baseURL, loginStrategy, HomePage }) => {
+        await loginStrategy.login(page, baseURL as string);
         await HomePage.header.clickNavigationMenuButton(HeaderMenuNames.input_fields);
     });
 
@@ -23,7 +22,7 @@ test.describe.parallel('Visual comparison tests', async () => {
 
             //Assert
             await expect(page).toHaveScreenshot({ 
-                mask: [ page.locator('#firstName'), page.locator('#lastName') ], 
+                mask: [ page.locator("input[name='firstName']"), page.locator("input[name='lastName']") ], 
                 maskColor: 'red' 
             });
         }

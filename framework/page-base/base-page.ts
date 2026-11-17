@@ -1,12 +1,7 @@
-import { Page } from "@playwright/test";
+import { UiComponent } from "./ui-component";
 
-export class BasePage {
-  page: Page;
-
-  constructor(page: Page) {
-    this.page = page;
-  }
-
+/** Layer Supertype for pages; also a Composite node (see UiComponent). */
+export class BasePage extends UiComponent {
   public async navigateUrl(url: string): Promise<void> {
     await this.page.goto(url);
   }

@@ -1,72 +1,47 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator } from "@playwright/test";
+import { step } from "@framework/decorators/step-decorator";
 import { PageWithHeaderAndFooter } from "../_common-pages/page-with-header-and-footer";
 import { CheckBoxNames } from "./checkbox-names-enum";
 
+export type TaskListStatus = {
+    allComplete: boolean;
+    someComplete: boolean;
+};
+
 export default class CheckBoxesPage extends PageWithHeaderAndFooter {
-    /**
-     *
-     */
-    constructor(page: Page) {
-        super(page);
-        this.indeterminateCheckbox = page.locator('#mat-checkbox-1');
-        this.primaryCheckbox = page.locator('#mat-checkbox-2');
-        this.accentCheckbox = page.locator('#mat-checkbox-3');
-        this.warnCheckbox = page.locator('#mat-checkbox-4');
-        this.indeterminateCheckboxStatus = page.locator('#mat-checkbox-1-input');
-        this.primaryCheckboxStatus = page.locator('#mat-checkbox-2-input');
-        this.accentCheckboxStatus = page.locator('#mat-checkbox-3-input');
-        this.warnCheckboxStatus = page.locator('#mat-checkbox-4-input');
+    // "Task List" card: a parent checkbox ("Indeterminate") controlling Primary / Accent / Warn.
+    private readonly taskList: Locator = this.page.locator('mat-card', { hasText: 'Task List' });
+
+    private static readonly labels: Record<CheckBoxNames, string> = {
+        [CheckBoxNames.indeterminate]: 'Indeterminate',
+        [CheckBoxNames.primary]: 'Primary',
+        [CheckBoxNames.accent]: 'Accent',
+        [CheckBoxNames.warn]: 'Warn',
+    };
+
+    protected override readyLocators(): Locator[] {
+        return [this.checkbox(CheckBoxNames.indeterminate)];
     }
 
-    private indeterminateCheckbox: Locator;
-    private primaryCheckbox: Locator;
-    private accentCheckbox: Locator;
-    private warnCheckbox: Locator;
-
-    private indeterminateCheckboxStatus: Locator;
-    private primaryCheckboxStatus: Locator;
-    private accentCheckboxStatus: Locator;
-    private warnCheckboxStatus: Locator;
-
-    async navigateWithUrl() {
-        await this.page.goto('');
+    @step('Click {0} checkbox')
+    async clickOnCheckBox(name: CheckBoxNames): Promise<void> {
+        await this.checkbox(name).click();
     }
 
-    async getindeterminateCheckboxClassNames(): Promise<string | null> {
-        return await this.indeterminateCheckbox.getAttribute('class');
+    async isChecked(name: CheckBoxNames): Promise<boolean> {
+        return await this.checkbox(name).isChecked();
     }
 
-    async clickOnCheckBox(name:CheckBoxNames): Promise<void> {
-        await (await this.getCheckBoxLocator(name)).click();
+    /** Reads the "All complete: … / Some complete: …" summary under the task list. */
+    async getTaskListStatus(): Promise<TaskListStatus> {
+        const text = await this.taskList.innerText();
+        return {
+            allComplete: /All complete:\s*true/.test(text),
+            someComplete: /Some complete:\s*true/.test(text),
+        };
     }
 
-    async isChecked(name:CheckBoxNames): Promise<boolean> {
-        return await (await this.getCheckBoxStatusLocator(name)).isChecked();
+    private checkbox(name: CheckBoxNames): Locator {
+        return this.taskList.getByRole('checkbox', { name: CheckBoxesPage.labels[name], exact: true });
     }
-
-    private async getCheckBoxStatusLocator(name:CheckBoxNames): Promise<Locator> {
-        switch (name) {
-            case CheckBoxNames.indeterminate:
-                return this.indeterminateCheckboxStatus;
-            case CheckBoxNames.primary:
-                return this.primaryCheckboxStatus;
-            case CheckBoxNames.accent:
-                return this.accentCheckboxStatus;
-            case CheckBoxNames.warn:
-                return this.warnCheckboxStatus;
-        }
-    } 
-
-    private async getCheckBoxLocator(name:CheckBoxNames): Promise<Locator> {
-        switch (name) {
-            case CheckBoxNames.indeterminate:
-                return this.indeterminateCheckbox;
-            case CheckBoxNames.primary:
-                return this.primaryCheckbox;
-            case CheckBoxNames.accent:
-                return this.accentCheckbox;
-            case CheckBoxNames.warn:
-                return this.warnCheckbox;
-        }
-    } 
 }

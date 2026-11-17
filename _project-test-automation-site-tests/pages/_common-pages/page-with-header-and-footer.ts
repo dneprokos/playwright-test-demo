@@ -4,15 +4,12 @@ import { FooterFragment } from "./fragments/footer-fragment";
 import { HeaderFragment } from "./fragments/header-fragment";
 
 export class PageWithHeaderAndFooter extends BasePage {
-    /**
-     *
-     */
+    readonly header: HeaderFragment;
+    readonly footer: FooterFragment;
+
     constructor(page: Page) {
         super(page);
-        this.header = new HeaderFragment(page);
-        this.footer = new FooterFragment(page);
+        this.header = this.add(new HeaderFragment(page));
+        this.footer = this.add(new FooterFragment(page));
     }
-
-    header: HeaderFragment;
-    footer: FooterFragment;
 }

@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import { step } from "@framework/decorators/step-decorator";
 import { PageWithHeaderAndFooter } from "../_common-pages/page-with-header-and-footer";
 import { InputPageInputFields } from "./fragments-and-models/input-page-input-fields";
 
@@ -10,18 +11,24 @@ export default class InputFieldsPage extends PageWithHeaderAndFooter {
         super(page);
     }
 
-    private firstNameInputLocator: Locator = this.page.locator('input#firstName');
-    private lastNameInputLocator: Locator = this.page.locator('input#lastName');
+    private firstNameInputLocator: Locator = this.page.locator("input[name='firstName']");
+    private lastNameInputLocator: Locator = this.page.locator("input[name='lastName']");
     private primaryLanguageInputLocator: Locator = this.page.locator(`//input[@name='primaryProgrammingLanguage']`);
     private otherLanguageInputLocator: Locator = this.page.locator(`//input[@name='otherProgrammingLenguages']`);
     private totalYearsInputLocator: Locator = this.page.locator(`//input[@name='yearsExperience']`);
     private cityInputLocator: Locator = this.page.locator(`//input[@name='city']`);
+    private printButtonLocator: Locator = this.page.getByRole('button', { name: 'Print Resume' });
+
+    protected override readyLocators(): Locator[] {
+        return [this.firstNameInputLocator, this.printButtonLocator];
+    }
 
     /**
-     * Clicks 'Print Details' button
+     * Clicks 'Print Resume' button
      */
+    @step('Click Print Resume')
     async clickPrintButton(): Promise<void> {
-        await this.page.click('#print');
+        await this.printButtonLocator.click();
     }
 
     /**

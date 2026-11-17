@@ -1,13 +1,13 @@
 import test from '@test_automation-project/playwright-fixture-extention';
-import AuthenticationSteps from '@test_automation-project/utils/common-steps/basic-steps';
 import { HeaderMenuNames } from '@test_automation-project/pages/_common-pages/fragments/header-menu-names-enum';
 import { expect } from '@playwright/test';
 import { RandomHelper } from '@framework/helpers/random-helpers';
 
 test.describe.parallel('Table page tests - Verify page logic', async () => {
-    test.beforeEach(async ({ page, baseURL, HomePage}) => {
-        await new AuthenticationSteps(page).openBasePageAndLoginWithSessionStorage(baseURL as string);
+    test.beforeEach(async ({ page, baseURL, loginStrategy, HomePage, TablePage }) => {
+        await loginStrategy.login(page, baseURL as string);
         await HomePage.header.clickNavigationMenuButton(HeaderMenuNames.table);
+        await TablePage.verifyLoaded();
     });
 
     const defaultDataCount = 5;
@@ -50,13 +50,13 @@ test.describe.parallel('Table page tests - Verify page logic', async () => {
             
             //Act
             await TablePage.tablePaging.clickNavigateNextPageButton();
-            const pageRangeLabel = await TablePage.tablePaging.getPageRangeLabel() as string;
+            const pageRangeLabel = await TablePage.tablePaging.getPageRangeLabel();
             const rows = await TablePage.tableData.getAllTableData();
 
             //Assert
             expect.soft(pageRangeLabel).toBe(expectedLabel);
             expect.soft(rows.length).toBe(defaultDataCount);
-            expect.soft(TablePage.tablePaging.isPreviousPageButtonEnabled()).toBeTruthy();
+            expect.soft(await TablePage.tablePaging.isPreviousPageButtonEnabled()).toBeTruthy();
     })
 
     test('Filter name - Only filtered records should be in the table', 
