@@ -1,207 +1,83 @@
-import { Page, expect } from '@playwright/test';
-import test from '@test_automation-project/playwright-fixture-extention';
+import { Page } from '@playwright/test';
+import test, { expect } from '@test_automation-project/playwright-fixture-extention';
+import { AbortRequest, FulfillJson, intercept, LogAndContinue } from '@framework/network/route-actions';
+import {
+  NINJA_PIZZA_MENU_SECTIONS,
+  NINJA_PIZZA_PRODUCTS_ROUTE,
+  NINJA_PIZZA_URL,
+  ninjaPizzaProductsResponse,
+  NinjaPizzaProductPrototype,
+} from '@api/stubs/ninja-pizza/ninja-pizza-product';
 
 test.describe.parallel('Intercept requests feature', async () => {
-  const interceptRoute = 'https://php.ninjawok.com.ua/apipizza/get/products';
-  const url = 'https://ninjapizza.com.ua/en';
+  const pizzaSectionTitle = (page: Page) => page.locator('#pizza div.product-list__title');
 
-  async function verifyProductsAndSectionTitlesAreHidden(page: Page) {
-    //Pizza
-    await expect.soft(page.locator('div.product-list__title:has-text("Pizza")')).toBeHidden();
-    await expect.soft(page.locator(`[id='1'] div.product-list__content`)).toBeHidden();
-
-    //Desserts
-    await expect.soft(page.locator('div.product-list__title:has-text("Desserts")')).toBeHidden();
-    await expect.soft(page.locator(`[id='10'] div.product-list__content`)).toBeHidden();
-
-    //Drinks
-    await expect.soft(page.locator('div.product-list__title:has-text("Drinks")')).toBeHidden();
-    await expect.soft(page.locator(`[id='7'] div.product-list__content`)).toBeHidden();
+  async function verifyMenuSectionsAreHidden(page: Page) {
+    for (const section of NINJA_PIZZA_MENU_SECTIONS) {
+      await expect.soft(page.locator(`#${section} div.product-list__title`)).toBeHidden();
+    }
   }
 
   test(`Intercept HTTP request - Log and continue`, async ({ page, context }) => {
     //Arrange
-    await context.route(interceptRoute, async route => {
-      // Log the request
-      const response = await route.fetch();
-      const json = await response.json();
-      console.log(JSON.stringify(json, null, 10));
-
-      // Continue with the intercepted request
-      await route.continue();
-    });
+    const logProducts = await intercept(context, NINJA_PIZZA_PRODUCTS_ROUTE, new LogAndContinue());
 
     //Act
-    await page.goto(url);
+    await page.goto(NINJA_PIZZA_URL);
 
     //Assert
-    await expect.soft(page.locator('div.product-list__title:has-text("Pizza")')).toBeVisible();
+    await expect.soft(pizzaSectionTitle(page)).toBeVisible();
+    await expect.poll(() => logProducts.handledCount).toBeGreaterThan(0);
   })
 
-  test(`Intercept HTTP request - And abort it  - pizzas section should not be shown`, async ({ page, context }) => {
+  // The site server-side renders the menu, so a failed client-side products request
+  // leaves the pre-rendered menu in place instead of emptying it.
+  test(`Intercept HTTP request - And abort it - server-rendered menu should stay visible`, async ({ page, context }) => {
     //Arrange
-    await context.route(interceptRoute, route => route.abort());
+    const abortProducts = await intercept(context, NINJA_PIZZA_PRODUCTS_ROUTE, new AbortRequest());
 
     //Act
-    await page.goto(url);
+    await page.goto(NINJA_PIZZA_URL);
 
     //Assert
-    await verifyProductsAndSectionTitlesAreHidden(page);
+    await expect.poll(() => abortProducts.handledCount).toBeGreaterThan(0);
+    await expect.soft(pizzaSectionTitle(page)).toBeVisible();
   })
 
-  test(`Intercept HTTP request - And modify request to return 0 products - products should not be shown`, async ({ page, context }) => {
+  test(`Intercept HTTP request - And modify response to return 0 products - menu sections should not be shown`, async ({ page, context }) => {
     //Arrange
-    await context
-      .route(interceptRoute, route => {
-        const modifiedResponse: object[] = [];
+    const noProducts = await intercept(context, NINJA_PIZZA_PRODUCTS_ROUTE, new FulfillJson(ninjaPizzaProductsResponse()));
 
-        return route.fulfill({
-          status: 400,
-          contentType: 'application/json',
-          body: JSON.stringify(modifiedResponse),
-        });
-      }
-      );
     //Act
-    await page.goto(url);
+    await page.goto(NINJA_PIZZA_URL);
 
     //Assert
-    await verifyProductsAndSectionTitlesAreHidden(page);
+    await verifyMenuSectionsAreHidden(page);
+    await expect.poll(() => noProducts.handledCount).toBeGreaterThan(0);
   })
 
-  test(`Intercept HTTP request - And modify request to return 1 product for 1 category - 1 product for 1 category should appear`,
-    async ({ page, context }) => {
+  test(`Intercept HTTP request - And modify response to return 1 product - only that product should appear`, async ({ page, context }) => {
+    //Arrange
+    const stubbedPizza = NinjaPizzaProductPrototype.pizza.clone().withId('stub-1').withTitle('Stubbed Carbonara');
+    await intercept(context, NINJA_PIZZA_PRODUCTS_ROUTE, new FulfillJson(ninjaPizzaProductsResponse(stubbedPizza)));
 
-      //Arrange
-      await context.route(interceptRoute,
-        route => {
-          const modifiedResponse = [{
-            "id": 21,
-            "name": "Пицца «Карбонара»",
-            "localizedTitles": {
-              "en": "Pizza \"Carbonara\"blablablablablablablablabla",
-              "ua": "Піца «Карбонара»"
-            },
-            "desc": "",
-            "category": 1,
-            "icategory": 0,
-            "url": "pizza-carbonara",
-            "images": {
-              "xl": "https://php.ninjapizza.com.ua/images/21/xl2x.webp?ver=v1.0.7",
-              "l": "https://php.ninjapizza.com.ua/images/21/l2x.webp?ver=v1.0.7",
-              "m": "https://php.ninjapizza.com.ua/images/21/l.webp?ver=v1.0.7",
-              "s": "https://php.ninjapizza.com.ua/images/21/m.webp?ver=v1.0.7"
-            },
-            "unit": 1,
-            "ingredients": [
-              {
-                //"name": "Тесто из четырех видов муки",
-                "localizedTitles": {
-                  "en": "Dough made of four types of flour",
-                  "ua": "Тісто з чотирьох видів борошна"
-                },
-                //"image": "https://php.ninjapizza.com.ua/images/ing/1.png",
-                "main": false
-              },
-              {
-                //"name": "Моцарелла",
-                "localizedTitles": {
-                  "en": "Mozzarella",
-                  "ua": "Моцарела"
-                },
-                //"image": "https://php.ninjapizza.com.ua/images/ing/3.png",
-                "main": false
-              },
-              {
-                //"name": "Пармезан",
-                "localizedTitles": {
-                  "en": "Parmesan",
-                  "ua": "Пармезан"
-                },
-                //"image": "https://php.ninjapizza.com.ua/images/ing/7.png",
-                "main": false
-              },
-              {
-                //"name": "Лук фри",
-                "localizedTitles": {
-                  "en": "Crispy fried onion",
-                  "ua": "Цибуля фрі"
-                },
-                //"image": "https://php.ninjapizza.com.ua/images/ing/22.png",
-                "main": false
-              },
-              {
-                //"name": "Соус на основе взбитых сливок",
-                "localizedTitles": {
-                  "en": "Whipped cream sauce",
-                  "ua": "Соус на основі збитих вершків"
-                },
-                //"image": "https://php.ninjapizza.com.ua/images/ing/25.png",
-                "main": false
-              },
-              {
-                //"name": "Бекон",
-                "localizedTitles": {
-                  "en": "Bacon",
-                  "ua": "Бекон"
-                },
-                //"image": "https://php.ninjapizza.com.ua/images/ing/111.png",
-                "main": false
-              },
-              {
-                //"name": "Желток",
-                "localizedTitles": {
-                  "en": "Yolk",
-                  "ua": "Жовток"
-                },
-                //"image": "https://php.ninjapizza.com.ua/images/ing/112.png",
-                "main": false
-              }
-            ],
-            // "pfc": {
-            //   "calories": 266,
-            //   "carbohydrates": 47,
-            //   "fats": 16,
-            //   "proteins": 24
-            // },
-            "price": 330,
-            "rating": 39,
-            "popularity": 25,
-            "spicy": 0,
-            "vegan": false,
-            "meat": true,
-            "seafood": false,
-            "new": true,
-            "top": false,
-            "weight": 540,
-            "sizeInCentimeters": 30
-          }
-          ];
+    //Act
+    await page.goto(NINJA_PIZZA_URL);
 
-          return route.fulfill({
-            status: 200,
-            contentType: 'application/json',
-            body: JSON.stringify(modifiedResponse),
-          });
-        }
-      );
-
-      //Act
-      await page.goto(url);
-
-      //Assert
-      await expect.soft(page.locator('div.product-list__title:has-text("Pizza")')).toBeVisible();
-      //TODO: Add verification Title and one pizza is present
-    })
+    //Assert
+    await expect.soft(pizzaSectionTitle(page)).toBeVisible();
+    await expect(page.locator('a.product-card__title')).toHaveText(['Stubbed Carbonara']);
+  })
 
   test(`Intercept other type of request - Remove main image`, async ({ page, context }) => {
     //Arrange
     await context.route('https://php.ninjapizza.com.ua/images/news/legend.png?ver=v1.0.7', route => route.abort());
 
     //Act
-    await page.goto(url);
+    await page.goto(NINJA_PIZZA_URL);
 
     //Assert
+    //TODO: Add appropriate assertion
     await page.waitForTimeout(10000);
   })
 })

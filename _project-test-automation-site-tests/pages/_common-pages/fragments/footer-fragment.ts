@@ -1,11 +1,8 @@
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Page } from "@playwright/test";
+import { Locator } from "@playwright/test";
 
 export class FooterFragment extends BaseFragment {
-    /**
-     *
-     */
-    constructor(page: Page) {
-        super(page);
+    protected override readyLocators(): Locator[] {
+        return [this.page.locator('footer')];
     }
 }

@@ -1,16 +1,18 @@
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Page } from "@playwright/test";
+import { step } from "@framework/decorators/step-decorator";
+import { Locator } from "@playwright/test";
 import { HeaderMenuNames } from "./header-menu-names-enum";
 
 export class HeaderFragment extends BaseFragment {
-    /**
-     *
-     */
-    constructor(page: Page) {
-        super(page);
+    // The site renders the menu twice: a hidden side-nav drawer and the visible toolbar.
+    private readonly navigation: Locator = this.page.locator('nav.nav-links');
+
+    protected override readyLocators(): Locator[] {
+        return [this.navigation];
     }
 
+    @step('Navigate to {0}')
     async clickNavigationMenuButton(menuName: HeaderMenuNames): Promise<void> {
-        await this.page.click(`a:has-text("${menuName}")`)
+        await this.navigation.getByRole('link', { name: menuName, exact: true }).click();
     }
 }

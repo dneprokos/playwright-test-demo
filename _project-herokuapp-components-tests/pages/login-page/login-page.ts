@@ -1,5 +1,6 @@
 import { BasePage } from "@framework/page-base/base-page";
-import test, { expect, Locator, Page } from "@playwright/test";
+import { step } from "@framework/decorators/step-decorator";
+import { expect, Locator, Page } from "@playwright/test";
 
 export default class LoginPage extends BasePage {
   userNameLocator: Locator;
@@ -16,15 +17,12 @@ export default class LoginPage extends BasePage {
     this.loginTextContentLocator = this.page.locator("h4.subheader");
   }
 
+  @step("Read credential tips from the form")
   async getUsernameAndPassword(): Promise<[string, string]> {
-    return await test.step("Read credential tips from the form", async () => {
-      const nameAndPassword: string[] = await this.page
-        .locator("h4.subheader > em")
-        .allInnerTexts();
-      const username = nameAndPassword[0];
-      const password = nameAndPassword[1];
-      return [username, password];
-    });
+    const [username, password] = await this.page
+      .locator("h4.subheader > em")
+      .allInnerTexts();
+    return [username, password];
   }
 
   async fillUsernameAndPassword(
@@ -35,11 +33,10 @@ export default class LoginPage extends BasePage {
     await this.passwordLocator.fill(password);
   }
 
+  @step("Login to application")
   async performLoginActions(username: string, password: string): Promise<void> {
-    await test.step("Login to application", async () => {
-      await this.fillUsernameAndPassword(username, password);
-      await this.page.click('button[type="submit"]');
-    });
+    await this.fillUsernameAndPassword(username, password);
+    await this.page.click('button[type="submit"]');
   }
 
   async getWelcomeMessage(): Promise<string> {
@@ -54,12 +51,11 @@ export default class LoginPage extends BasePage {
     await this.page.click('a >> text="Logout"');
   }
 
+  @step("Verify that user was logged in")
   async verifyThatUserWasLoggedIn(): Promise<void> {
-    await test.step("Verify that user was logged in", async () => {
-      expect(await this.getWelcomeMessage()).toBe(
-        "Welcome to the Secure Area. When you are done click logout below."
-      );
-      expect(await this.isLogoutButtonDisplayed()).toBeTruthy();
-    });
+    expect(await this.getWelcomeMessage()).toBe(
+      "Welcome to the Secure Area. When you are done click logout below."
+    );
+    expect(await this.isLogoutButtonDisplayed()).toBeTruthy();
   }
 }

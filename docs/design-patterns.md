@@ -32,7 +32,7 @@ Not every "pattern" comes from the same source. Each pattern below is tagged wit
 | # | Pattern | Category | Original source |
 |---|---|---|---|
 | 1 | Page Object Model | Test Automation | Selenium WebDriver wiki; Fowler, *PageObject* (2013) |
-| 2 | Page Fragment / Component Object | Test Automation (+ GoF composition principle) | Selenium community "Page Components" / HtmlElements |
+| 2 | Page Fragment / Component Object | Test Automation (+ GoF Composite, see 25) | Selenium community "Page Components" / HtmlElements |
 | 3 | Layer Supertype (base classes) | PoEAA | Fowler, PoEAA (2002) |
 | 4 | Dependency Injection via fixtures | Principle + xUnit + Playwright | Fowler, *IoC Containers and the DI pattern* (2004); Meszaros *Fixture* |
 | 5 | Facade | GoF — Structural | GoF (1994) |
@@ -52,6 +52,10 @@ Not every "pattern" comes from the same source. Each pattern below is tagged wit
 | 19 | Factory Method | GoF — Creational | GoF (1994) |
 | 20 | Abstract Factory | GoF — Creational | GoF (1994) |
 | 21 | Singleton (per process) / Multiton | GoF — Creational | GoF (1994); Multiton is a keyed variant |
+| 22 | Prototype | GoF — Creational | GoF (1994) |
+| 23 | Command (route actions) | GoF — Behavioral | GoF (1994) |
+| 24 | Strategy (login methods) | GoF — Behavioral | GoF (1994) |
+| 25 | Composite (`verifyLoaded()`) | GoF — Structural | GoF (1994) |
 
 ---
 
@@ -71,7 +75,7 @@ Locators are defined in two styles: `readonly Locator` fields set in the constru
 
 ## 2. Page Fragment / Component Object (Composition)
 
-**Category:** Test Automation. **Origin:** Selenium community "Page Components" (also Yandex HtmlElements, Serenity). It relies on the GoF principle *"favor object composition over class inheritance"*. It is close to a GoF **Composite**, but fragments are not treated uniformly with pages, so it is not a strict Composite.
+**Category:** Test Automation. **Origin:** Selenium community "Page Components" (also Yandex HtmlElements, Serenity). It relies on the GoF principle *"favor object composition over class inheritance"*. Pages and fragments now share the `UiComponent` base, so the structure is a real GoF **Composite** (section 25).
 
 Reusable parts of a page (header, footer, table, form, paging) are modelled as fragments and **composed** into pages.
 
@@ -182,8 +186,19 @@ Methods return `this` or the next object so calls can be chained.
 
 **Category:** GoF — Structural, in its language-level form. **Origin:** GoF Decorator (1994) wraps an object to add behaviour without changing it. TypeScript 5 / TC39 stage-3 decorators apply the same idea at method level. It also overlaps with aspect-oriented programming (a cross-cutting reporting concern).
 
-- `framework/decorators/step_decorator.ts.ts`: method decorator `@step` that wraps a method in `test.step()` for reporting.
-- Status: defined but not applied anywhere yet. The same wrapping is done by hand in `login-page.ts` and `utils/common-steps/*.ts` (`test.step(..., { box: true })`).
+- `framework/decorators/step-decorator.ts`: decorator factory `@step(title?, { box? })` that wraps a method in `test.step()` for reporting.
+  - `@step()` names the step `ClassName.methodName`. Arguments are **not** printed, so credentials never reach the report.
+  - `@step('Navigate to {0}')` uses a title; `{n}` is replaced with the n-th argument.
+  - `{ box: true }` reports a failure at the caller's line instead of inside the helper.
+- Applied in:
+  - `_project-herokuapp-components-tests/pages/login-page/login-page.ts` (replaces three hand-written `test.step` blocks)
+  - `_project-test-automation-site-tests/pages/login-page/fragments/login-form-fragment.ts`, `_common-pages/fragments/header-fragment.ts`
+  - `utils/common-steps/browser-application-utils.ts`, the login strategies (section 24), `UiComponent.verifyLoaded()` (section 25)
+
+```ts
+@step('Navigate to {0}')
+async clickNavigationMenuButton(menuName: HeaderMenuNames): Promise<void> { ... }
+```
 
 ## 13. Step Objects / Step Library
 
@@ -191,8 +206,8 @@ Methods return `this` or the next object so calls can be chained.
 
 Higher-level business steps grouped outside pages.
 
-- `_project-test-automation-site-tests/utils/common-steps/basic-steps.ts`: `openBasePageAndLoginWithSessionStorage()`
 - `_project-test-automation-site-tests/utils/common-steps/browser-application-utils.ts`: `setSessionStorage()`
+- Login steps moved into interchangeable strategies (section 24); the former `basic-steps.ts` was removed.
 - In-page steps: `LoginPage.performLoginActions()` and `verifyThatUserWasLoggedIn()` in the herokuapp project
 
 ## 14. Test structure patterns
@@ -214,7 +229,7 @@ Where they are used:
 
 **Category:** xUnit + Playwright. **Origin:** Meszaros, *xUnit Test Patterns* (2007), which defines Test Double and its kinds: Dummy, Stub, Spy, Mock, Fake. `route.fulfill()` with fake data is a **Stub**. `route.abort()` simulates failure. `route.fetch()` + log + `continue()` is a **Spy**. Playwright's `route` is the mechanism.
 
-Network responses are aborted, logged, or replaced with fake data via `context.route()`.
+Network responses are aborted, logged, or replaced with fake data via `context.route()`. The handlers are Command objects (section 23) and the fake payloads are cloned from a Prototype (section 22).
 
 - `_project-herokuapp-components-tests/tests/request_intercept/ninja-pizza-intercept.tests.ts`
 - `_project-herokuapp-components-tests/tests/request_intercept/karabas-intercept.tests.ts`
@@ -391,13 +406,91 @@ Example of the fail-fast behaviour: `WORKERS=abc` → `Invalid configuration (..
 - Effect: each user logs in once per worker instead of once per test. In a check with 8 clients for 2 users there were 2 logins.
 - This is why it isn't a static Singleton: a static cache would mix tokens from the real and stub backends and could not be disposed.
 
+## 22. Prototype
+
+**Category:** GoF — Creational. **Origin:** *Design Patterns* (1994): "specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype". Builder (section 18) starts from defaults and assembles an object; Prototype starts from a complete, known-good object and copies it. Prototype fits when the valid object is large and nested and a test only needs a small variation of it.
+
+- Interface: `framework/prototypes/prototype.ts`, `Prototype<T> { clone(): T }`
+- Concrete prototype: `services-rest-api/stubs/ninja-pizza/ninja-pizza-product.ts`, `NinjaPizzaProductPrototype`
+  - Wraps a real pizza captured from `GET /api/catalog/products` (images, ingredients, translations, category, city ids). The menu renders it as-is.
+  - `NinjaPizzaProductPrototype.pizza` is the registry entry; the constructor is private, so new variants are always clones.
+  - `clone()` deep-copies with `structuredClone`; `withId()`, `withTitle()`, `withPrice()` change only the copy.
+  - `ninjaPizzaProductsResponse(...products)` wraps clones in the paged `{ items, total, limit, ... }` envelope.
+- Used by both `ninja-pizza-intercept.tests.ts` (herokuapp) and `request-interception.tests.ts` (test-automation site). It replaces about 100 lines of pizza JSON that was copied into each file.
+
+```ts
+const stubbedPizza = NinjaPizzaProductPrototype.pizza.clone().withId('stub-1').withTitle('Stubbed Carbonara');
+await intercept(context, NINJA_PIZZA_PRODUCTS_ROUTE, new FulfillJson(ninjaPizzaProductsResponse(stubbedPizza)));
+await expect(page.locator('a.product-card__title')).toHaveText(['Stubbed Carbonara']);
+```
+
+## 23. Command (route actions)
+
+**Category:** GoF — Behavioral. **Origin:** *Design Patterns* (1994): "encapsulate a request as an object, thereby letting you parameterize clients with different requests, queue or log requests". The test (client) builds a command, Playwright's router (invoker) calls it later for each matching request, and the command does the work on the `Route` (receiver).
+
+- `framework/network/route-actions.ts`
+  - `RouteAction`: abstract command with `execute(route)`, a `description` for reports, and `handledCount`.
+  - Concrete commands: `AbortRequest`, `LogAndContinue` (a Spy), `FulfillJson(body, status)` (a Stub).
+  - `intercept(pageOrContext, url, action)`: registers the command inside a named `test.step` and returns it.
+- Why an object instead of an inline lambda:
+  - The same handler is reused across tests and projects.
+  - `handledCount` lets a test prove the route matched. The previous inline handlers had no such check, so when Ninja Pizza moved its API to another host, the stubs silently stopped applying.
+
+```ts
+const abortProducts = await intercept(context, NINJA_PIZZA_PRODUCTS_ROUTE, new AbortRequest());
+await page.goto(NINJA_PIZZA_URL);
+await expect.poll(() => abortProducts.handledCount).toBeGreaterThan(0);
+```
+
+## 24. Strategy (login methods)
+
+**Category:** GoF — Behavioral. **Origin:** *Design Patterns* (1994): "define a family of algorithms, encapsulate each one, and make them interchangeable". The test depends on the `LoginStrategy` interface; which algorithm runs is configuration.
+
+| Role | Class (`_project-test-automation-site-tests/utils/login-strategies/login-strategy.ts`) | Algorithm |
+|---|---|---|
+| Strategy | `LoginStrategy` interface: `login(page, baseURL)` | — |
+| Concrete Strategy | `SessionStorageLoginStrategy` | seeds `sessionStorage.user` with an init script, then opens the app (fast path) |
+| Concrete Strategy | `UiFormLoginStrategy` | opens the login page, checks the form is loaded, submits `APP_USER` / `PASSWORD` (real user path) |
+| Context | `loginStrategy` fixture | built by `createLoginStrategy(loginMethod)` |
+
+Choosing the strategy (same mechanism as `moviesBackend` in section 20):
+- `playwright-fixture-extention.ts`: option `loginMethod`, default `'session-storage'`.
+- Per describe block: `test.use({ loginMethod: 'ui-form' })`. `tests/home-page.tests.ts` runs one test body under both strategies.
+- Per project: set `use: { loginMethod: 'ui-form' }` in `playwright.config.ts`.
+
+Seven test files used to call `new AuthenticationSteps(page).openBasePageAndLoginWithSessionStorage(...)`. They now call `loginStrategy.login(page, baseURL)`.
+
+Also fixed: `BrowserApplicationUtils.setSessionStorage()` referred to `key`/`value` inside the init script, which runs in the browser where those variables do not exist. They are now passed as the script argument.
+
+## 25. Composite (`verifyLoaded()`)
+
+**Category:** GoF — Structural. **Origin:** *Design Patterns* (1994): "compose objects into tree structures ... Composite lets clients treat individual objects and compositions of objects uniformly".
+
+| Role | Class |
+|---|---|
+| Component | `framework/page-base/ui-component.ts`, `UiComponent`: `verifyLoaded()`, `readyLocators()`, `add(child)` |
+| Composite | `BasePage` / `BaseFragment` subclasses that register children, e.g. `PageWithHeaderAndFooter`, `TablePage`, `LoginPage` |
+| Leaf | fragments without children, e.g. `HeaderFragment`, `FooterFragment`, `TableDataFragment`, `TablePagingFragment`, `FilterTableDataFragment`, `LoginFormFragment` |
+
+- Each component lists its own "ready" elements in `readyLocators()`.
+- Children are registered in the constructor: `this.tableData = this.add(new TableDataFragment(page))`.
+- `verifyLoaded()` asserts its own elements, then calls `verifyLoaded()` on every child. It is decorated with `@step()`, so the report shows the tree.
+- Callers do not care whether they hold a page or a fragment:
+
+```ts
+await TablePage.verifyLoaded();              // page -> header, footer, table, filter, paging
+await TablePage.tablePaging.verifyLoaded();  // one leaf
+```
+
+Used in `tests/table-page-tests.ts` (`beforeEach`), `tests/home-page.tests.ts`, and `UiFormLoginStrategy` (checks the login form before typing).
+
 ---
 
 ## Distribution by category
 
 | Category | Patterns |
 |---|---|
-| GoF | Facade (Structural), Decorator (Structural), Builder (Creational), Factory Method (Creational), Abstract Factory (Creational), Singleton (Creational), Adapter-like wrapper (Structural) |
+| GoF | Builder, Factory Method, Abstract Factory, Singleton, Prototype (Creational); Facade, Decorator, Composite, Adapter-like wrapper (Structural); Command, Strategy (Behavioral) |
 | PoEAA | Layer Supertype, DTO, Registry, Gateway (API objects, SQL wrapper), Value Object |
 | DDD | Value Object |
 | xUnit Test Patterns | Fixtures (fresh/shared/suite), Test Double, Generated Value, Test Data Builder |
@@ -405,21 +498,38 @@ Example of the fail-fast behaviour: `WORKERS=abc` → `Invalid configuration (..
 | Playwright built-ins | Fixtures DI (`test.extend`), worker-scoped fixtures and options, `test.step`, `context.route`, `expect.soft`, projects |
 | Idioms / Principles | Dependency Injection, Fluent Interface, Fail Fast, Twelve-Factor config, Arrange-Act-Assert, Lazy getters |
 
-**Takeaway:** the codebase is mainly built on **test-automation patterns** (POM + fragments) and **Playwright fixtures** for wiring. Classic **GoF** patterns are few: Facade, Builder (as Test Data Builders), Factory Method (role-based API clients) and Abstract Factory (real vs stub backend family) are used deliberately, and Decorator is present but unused. Behavioral GoF patterns (Strategy, Command, Observer, etc.) do not appear.
+**Takeaway:** the codebase is mainly built on **test-automation patterns** (POM + fragments) and **Playwright fixtures** for wiring. GoF patterns are used where they solve a concrete problem, and all three families are represented:
+- Creational: Builder, Factory Method, Abstract Factory, Singleton, Prototype
+- Structural: Facade, Decorator, Composite
+- Behavioral: Command, Strategy
+
+Patterns from the GoF catalog and the *Design Patterns in Test Automation* talk that were considered and **deliberately not added**, because Playwright already covers them:
+- **Object Pool:** Playwright reuses browsers per worker; worker-scoped fixtures pool anything else (`SqlConnectionPool`, `AuthTokenCache`).
+- **Lazy Initialization:** fixtures are created only when a test requests them; `MoviesApiClient` creates its context lazily.
+- **Iterator:** native TS iterators/generators and `locator.all()`.
+- **Proxy:** token caching is already handled by `AuthTokenCache` (section 21.3).
+- **State:** no page in the suite changes behaviour based on internal state.
 
 ---
 
 ## Observations and suggestions
 
 1. **Fixture boilerplate:** each project repeats `x: async ({ page }, use) => use(new X(page))`. A small helper (`pageFixture(X)`) would cut the repetition.
-2. **Unused building blocks:** `@step` decorator, `SqlBaseRequest`, `RandomHelper` and `movies-api-requests.ts` exist without callers. Apply or remove them. (`setGlobalConfig` was removed.)
+2. **Unused building blocks:** `SqlBaseRequest` and `movies-api-requests.ts` exist without callers. Apply or remove them. (`setGlobalConfig` was removed; `@step` is now applied, section 12.)
 3. **Two config styles:** resolved. All four projects use the validated `Config` singleton (section 21.1).
 4. **Request classes assert inside:** resolved for the Movies API, which now has raw `...Response()` methods next to the asserting ones. `BookingsApiRequests` still asserts 200 inside.
 5. **Request context lifecycle:** resolved. The Movies API clients get their context from the factory method and dispose it via fixtures, and the old `MoviesApiService` was removed. Its `isServiceAvailable()` treated 404 as "available"; the new `MoviesApiClient.isServiceAvailable()` probes `/authorization` and treats 404 as unavailable.
 6. **`waitForElementsCount` logic:** the loop condition `count !== expected || timeOut !== 0` always runs the full timeout. Prefer `expect(locator).toHaveCount(n)`.
-7. **Duplicated intercept tests:** `ninja-pizza-intercept.tests.ts` and `request-interception.tests.ts` are near copies. Move the stub payload to a shared fixture file.
-8. **Typos in file names:** `fixture-extention.ts`, `fragements/`, `data-generatos/`, `step_decorator.ts.ts`.
-9. **Candidate patterns to add:** extend Test Data Builders to the request-interception stub payloads (a `ProductBuilder` would remove the duplicated pizza JSON), **Strategy** (GoF) for environment-specific auth, and **Screenplay** if step libraries grow.
+7. **Duplicated intercept tests:** resolved for the payload. The pizza JSON lives once in the Prototype (section 22), and the handlers are shared Commands (section 23). The two test files remain as one demo per project.
+8. **Typos in file names:** `fixture-extention.ts`, `fragements/`, `data-generatos/`. (`step_decorator.ts.ts` was renamed to `step-decorator.ts`.)
+9. **Candidate patterns to add:** resolved. Prototype, Command, Strategy and Composite were added (sections 22-25). **Screenplay** remains an option if step libraries grow.
 10. **Possible credential swap in `.env`:** `MOVIES_API_ADMIN_USERNAME=test` and `MOVIES_API_REGULAR_USERNAME=testadmin` look reversed. Check them against the movies service users.
 11. **`USER` name clash:** resolved. The test-automation project read `USER` from `.env`, but the shell already sets `USER` on Linux, macOS and Git Bash, and existing variables win over `.env`, so the OS user name was used without any warning. The setting is now called `APP_USER`.
 12. **Tests that depend on live data:** `main-page.tests.ts` (herokuapp now lists more pages) and `rest-api-example.tests.ts` (the newest public booking is no longer "Jim Brown") fail because the live sites changed, not because of framework code.
+13. **Stale selectors after the test-automation site moved to Angular Material MDC:** resolved. The header targets the visible `nav.nav-links` toolbar (the menu is also rendered, hidden, in the side-nav). The check-box, radio, input and table page objects use role/name or `name`-attribute locators instead of generated ids like `#mat-checkbox-1`. Behaviour changes on the site were reflected in the tests:
+    - The task-list parent checkbox no longer shows an indeterminate state; tests assert the page's "All complete / Some complete" summary instead.
+    - The radio label is now "Favorite season: X" and the print button is "Print Resume".
+    - The table filter applies on keyup, so it is typed with `pressSequentially()`.
+    - Visual baselines for the redesigned input page were regenerated (Chrome); the masks now target `input[name=...]`.
+    - Two tests could never fail and now do: an un-awaited `isPreviousPageButtonEnabled()` assertion, and checkbox assertions inside `forEach(async ...)`.
+14. **Ninja Pizza moved its API:** products now come from `ninjasushi.com.ua/api/catalog/products` in a paged `{ items, total, ... }` envelope, and the menu is server-side rendered. Aborting the client request no longer hides the menu, so the abort test now asserts that the pre-rendered menu stays visible.

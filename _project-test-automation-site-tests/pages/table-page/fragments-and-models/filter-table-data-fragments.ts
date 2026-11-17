@@ -1,15 +1,17 @@
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Page } from "@playwright/test";
+import { step } from "@framework/decorators/step-decorator";
+import { Locator } from "@playwright/test";
 
 export class FilterTableDataFragment extends BaseFragment {
-    /**
-     *
-     */
-    constructor(page: Page) {
-        super(page);
+    private readonly filterInput: Locator = this.page.locator('input.filter');
+
+    protected override readyLocators(): Locator[] {
+        return [this.filterInput];
     }
 
-    async typeTextToFilterField(text: string) {
-        await this.page.type('#mat-input-0', text, {delay: 0.5});
+    /** Types key by key: the table filters on keyup, so `fill()` alone does not apply the filter. */
+    @step('Filter table by "{0}"')
+    async typeTextToFilterField(text: string): Promise<void> {
+        await this.filterInput.pressSequentially(text);
     }
 }

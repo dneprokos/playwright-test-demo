@@ -1,28 +1,27 @@
 import { BaseFragment } from "@framework/page-base/base-fragment";
-import { Page } from "@playwright/test";
+import { step } from "@framework/decorators/step-decorator";
+import { Locator } from "@playwright/test";
 import { Config } from "@test_automation-project/config";
 
 export class LoginFormFragment extends BaseFragment {
-    /**
-     *
-     */
-    constructor(page: Page) {
-        super(page);
+    private readonly loginInput: Locator = this.page.locator('#login');
+    private readonly passwordInput: Locator = this.page.locator('#password');
+    private readonly loginButton: Locator = this.page.locator('#loginBtn');
+
+    protected override readyLocators(): Locator[] {
+        return [this.loginInput, this.passwordInput, this.loginButton];
     }
 
-    async fillCredentialsAndClickLoginButton(userName: string, password: string) {
-        await this.page.fill('#login', userName);
-        await this.page.fill('#password', password);
-        await this.page.click('#loginBtn');
+    @step('Fill credentials and click Login', { box: true })
+    async fillCredentialsAndClickLoginButton(userName: string, password: string): Promise<void> {
+        await this.loginInput.fill(userName);
+        await this.passwordInput.fill(password);
+        await this.loginButton.click();
     }
 
-    async loginToMainPageWithCorrectCredentials() {
-        const user = Config.APP_USER;
-        const password = Config.PASSWORD;
-        await this.fillCredentialsAndClickLoginButton(user, password);
-        await this.page
-            .waitForLoadState('domcontentloaded')
-            .then(() => console.log('logged in'));
-        //TODO: Add some element verification step
+    @step('Login with configured credentials', { box: true })
+    async loginToMainPageWithCorrectCredentials(): Promise<void> {
+        await this.fillCredentialsAndClickLoginButton(Config.APP_USER, Config.PASSWORD);
+        await this.page.waitForURL(url => !url.pathname.startsWith('/login'));
     }
 }

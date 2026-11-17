@@ -1,13 +1,12 @@
 import test from '@test_automation-project/playwright-fixture-extention';
-import AuthenticationSteps from '@test_automation-project/utils/common-steps/basic-steps';
 import { HeaderMenuNames } from '@test_automation-project/pages/_common-pages/fragments/header-menu-names-enum';
 import { InputPageInputFields } from '../pages/input-fields-page/fragments-and-models/input-page-input-fields';
 import { expect } from '@playwright/test';
 
 
 test.describe.parallel('Input page tests - Verify page logic', async () => {
-    test.beforeEach(async ({ page, baseURL, HomePage}) => {
-        await new AuthenticationSteps(page).openBasePageAndLoginWithSessionStorage(baseURL as string);
+    test.beforeEach(async ({ page, baseURL, loginStrategy, HomePage }) => {
+        await loginStrategy.login(page, baseURL as string);
         await HomePage.header.clickNavigationMenuButton(HeaderMenuNames.input_fields);
     });
 

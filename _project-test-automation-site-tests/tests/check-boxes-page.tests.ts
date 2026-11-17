@@ -1,12 +1,12 @@
 import test, { expect } from '@test_automation-project/playwright-fixture-extention';
-import AuthenticationSteps from '@test_automation-project/utils/common-steps/basic-steps';
 import { CheckBoxNames } from '@test_automation-project/pages/check-box-page/checkbox-names-enum';
 import { HeaderMenuNames } from '@test_automation-project/pages/_common-pages/fragments/header-menu-names-enum';
 
 test.describe.parallel('Check-boxes page tests - Verify page logic', async () => {
-    test.beforeEach(async ({ page, baseURL, HomePage}) => {
-        await new AuthenticationSteps(page).openBasePageAndLoginWithSessionStorage(baseURL as string);
+    test.beforeEach(async ({ page, baseURL, loginStrategy, HomePage, CheckBoxesPage }) => {
+        await loginStrategy.login(page, baseURL as string);
         await HomePage.header.clickNavigationMenuButton(HeaderMenuNames.check_boxes);
+        await CheckBoxesPage.verifyLoaded();
     });
     
     test('Check Indeterminate checkbox - Should mark all other checkboxes', 
@@ -19,6 +19,7 @@ test.describe.parallel('Check-boxes page tests - Verify page logic', async () =>
             expect.soft(await CheckBoxesPage.isChecked(CheckBoxNames.accent)).toBeTruthy();
             expect.soft(await CheckBoxesPage.isChecked(CheckBoxNames.primary)).toBeTruthy();
             expect.soft(await CheckBoxesPage.isChecked(CheckBoxNames.warn)).toBeTruthy();
+            expect.soft(await CheckBoxesPage.getTaskListStatus()).toEqual({ allComplete: true, someComplete: false });
         }
     );
 
@@ -29,9 +30,8 @@ test.describe.parallel('Check-boxes page tests - Verify page logic', async () =>
             await CheckBoxesPage.clickOnCheckBox(CheckBoxNames.primary);
 
             //Assert
-            expect
-                .soft(await CheckBoxesPage.getindeterminateCheckboxClassNames())
-                .toContain('mat-checkbox-indeterminate');
+            expect.soft(await CheckBoxesPage.isChecked(CheckBoxNames.indeterminate)).toBeFalsy();
+            expect.soft(await CheckBoxesPage.getTaskListStatus()).toEqual({ allComplete: false, someComplete: true });
             expect.soft(await CheckBoxesPage.isChecked(CheckBoxNames.primary)).toBeFalsy();
             expect.soft(await CheckBoxesPage.isChecked(CheckBoxNames.warn)).toBeTruthy();
             expect.soft(await CheckBoxesPage.isChecked(CheckBoxNames.accent)).toBeTruthy();
@@ -51,12 +51,11 @@ test.describe.parallel('Check-boxes page tests - Verify page logic', async () =>
 
             //Assert
             expect.soft(await CheckBoxesPage.isChecked(checkboxName)).toBeTruthy();
-            untachedCheckBoxNames.forEach(async name => {
+            for (const name of untachedCheckBoxNames) {
                 expect.soft(await CheckBoxesPage.isChecked(name)).toBeFalsy();
-            })
-            expect
-                .soft(await CheckBoxesPage.getindeterminateCheckboxClassNames())
-                .toContain('mat-checkbox-indeterminate');
+            }
+            expect.soft(await CheckBoxesPage.isChecked(CheckBoxNames.indeterminate)).toBeFalsy();
+            expect.soft(await CheckBoxesPage.getTaskListStatus()).toEqual({ allComplete: false, someComplete: true });
         });
     })
 })

@@ -10,6 +10,7 @@ import RadioButtonPage from './pages/radio-button-page/radio-button-page';
 import TablePage from './pages/table-page/table-page';
 import TogglePage from './pages/toggle-page/toggle-page';
 import { Config } from './config';
+import { createLoginStrategy, LoginMethod, LoginStrategy } from './utils/login-strategies/login-strategy';
 
 type Pages = {
     LoginPage: LoginPage;
@@ -29,9 +30,21 @@ type EnvironmentVariables = {
     restApiBaseUrl: string
 }
 
-export const test = base.extend<Pages & EnvironmentVariables>({
+type Authentication = {
+    /** Option: which LoginStrategy to use. Override per project or with `test.use({ loginMethod: 'ui-form' })`. */
+    loginMethod: LoginMethod
+    loginStrategy: LoginStrategy
+}
+
+export const test = base.extend<Pages & EnvironmentVariables & Authentication>({
     //Environment variables
     baseURL: Config.BASE_URL,
+
+    //Authentication (Strategy chosen by option)
+    loginMethod: ['session-storage', { option: true }],
+    loginStrategy: async ({ loginMethod }, use) => {
+        await use(createLoginStrategy(loginMethod));
+    },
 
     //Pages. Pages intialization for quick access
     LoginPage: async ({page}, use) => {

@@ -1,11 +1,5 @@
-import { Page } from "@playwright/test";
+import { UiComponent } from "./ui-component";
 
-export class BaseFragment {
-    page: Page
-
-    constructor(page: Page) {
-        this.page = page;
-    }
-
-    //TODO: Logger
+/** Layer Supertype for fragments; a Composite leaf, or a node if it adds children. */
+export class BaseFragment extends UiComponent {
 }

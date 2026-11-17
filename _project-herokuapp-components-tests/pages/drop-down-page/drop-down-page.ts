@@ -15,6 +15,15 @@ export default class DropDownPage extends BasePage {
         return await Promise.all(options.map(async (option) => await option.innerText()));
     }
 
+    /** Options a user can actually pick: the "Please select an option" placeholder is disabled. */
+    async getSelectableOptions(): Promise<{ index: number; text: string }[]> {
+        return await this.page.locator(this.dropDownOPtionSelector).evaluateAll(options =>
+            options
+                .map((option, index) => ({ index, text: (option as HTMLOptionElement).text.trim(), disabled: (option as HTMLOptionElement).disabled }))
+                .filter(option => !option.disabled)
+                .map(({ index, text }) => ({ index, text })));
+    }
+
     async getOptionsCount(): Promise<number> {
         const options = await this.page.$$(this.dropDownOPtionSelector);
         return options.length;
