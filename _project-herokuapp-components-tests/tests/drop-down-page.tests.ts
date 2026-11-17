@@ -10,7 +10,7 @@ test.describe.parallel('Drop-Down page tests - Verify page logic', async () => {
 
     test('Select random value by text - Should be selected', async ({ dropDownPage }) => {
         //Arrange
-        const options = await dropDownPage.getAllOptions();
+        const options = (await dropDownPage.getSelectableOptions()).map(option => option.text);
         const randomValue: string = new RandomHelper().getRandomValueFromArray(options) as string;
 
         //Act
@@ -23,13 +23,13 @@ test.describe.parallel('Drop-Down page tests - Verify page logic', async () => {
 
     test('Select random value by index - Should be selected', async ({ dropDownPage }) => {
         //Arrange
-        const options = await dropDownPage.getAllOptions();
-        const randomIndex: number = new RandomHelper().getRandomIndex(options.length);
+        const options = await dropDownPage.getSelectableOptions();
+        const randomOption = options[new RandomHelper().getRandomIndex(options.length)];
 
         //Act
-        await dropDownPage.selectOptionByIndex(randomIndex);
+        await dropDownPage.selectOptionByIndex(randomOption.index);
 
         //Assert
-        expect(await dropDownPage.getSelectedOption()).toBe(options[randomIndex]);
+        expect(await dropDownPage.getSelectedOption()).toBe(randomOption.text);
     });
 });
